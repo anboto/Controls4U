@@ -8,7 +8,7 @@
 
 using namespace Upp;
 
-#define LAYOUTFILE <examples/Controls4U_Demo/JBControlsDemo.lay>
+#define LAYOUTFILE <examples/Controls4U_demo/JBControlsDemo.lay>
 #include <CtrlCore/lay.h>
 
 class JBControlsDemo : public WithJBControlsDemoLayout<StaticRect> {
