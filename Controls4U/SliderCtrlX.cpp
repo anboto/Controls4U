@@ -20,7 +20,7 @@
 
 
 #define IMAGECLASS SliderThumbsImg
-#define IMAGEFILE <Controls4U/Controls4U/SliderCtrlX.iml>
+#define IMAGEFILE <Controls4U/SliderCtrlX.iml>
 #include <Draw/iml.h>
 
 namespace Upp {

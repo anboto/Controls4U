@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2021 - 2022, the Anboto author and contributors
 #include <CtrlLib/CtrlLib.h>
-#include <Controls4U/Controls4U/Controls4U.h>
+#include <Controls4U/Controls4U.h>
 
 using namespace Upp;
 

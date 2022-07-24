@@ -3,7 +3,7 @@ description "Some additional controls\377B44,169,203";
 uses
 	CtrlLib,
 	PolyXML,
-	Functions4U/Functions4U;
+	Functions4U;
 
 uses(!NOPAINTER) Painter;
 

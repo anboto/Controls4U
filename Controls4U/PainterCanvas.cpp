@@ -5,11 +5,11 @@
 
 #include <plugin/jpg/jpg.h>
 
-#define TFILE <Controls4U/Controls4U/Controls4U.t>
+#define TFILE <Controls4U/Controls4U.t>
 #include <Core/t.h>
 
 #define IMAGECLASS Controls4UImgC
-#define IMAGEFILE <Controls4U/Controls4U/Controls4U.iml>
+#define IMAGEFILE <Controls4U/Controls4U.iml>
 #include <Draw/iml.h>
 
 

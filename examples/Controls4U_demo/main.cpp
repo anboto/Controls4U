@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2021 - 2022, the Anboto author and contributors
 #include <CtrlLib/CtrlLib.h>
-#include <Controls4U/Controls4U/Controls4U.h>
+#include <Controls4U/Controls4U.h>
 
 using namespace Upp;
 
@@ -12,7 +12,7 @@ using namespace Upp;
 #include "JBControlsDemo.h"
 #include "Controls4U_Demo.h"
 
-#define IMAGEFILE <Controls4U/examples/Controls4U_demo/Controls4U_Demo.iml>
+#define IMAGEFILE <examples/Controls4U_demo/Controls4U_Demo.iml>
 #define IMAGECLASS Images
 #include <Draw/iml.h>
 
