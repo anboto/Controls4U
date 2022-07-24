@@ -2,9 +2,9 @@ description "Controls4U Ctrls demo\377";
 
 uses
 	CtrlLib,
-	Controls4U,
 	plugin\gif,
-	plugin\jpg;
+	plugin\jpg,
+	Controls4U/Controls4U;
 
 file
 	main.cpp,

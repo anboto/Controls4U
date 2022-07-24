@@ -24,7 +24,7 @@
 #include "StarIndicator.h"
 
 #define IMAGECLASS StarsImg
-#define IMAGEFILE <Controls4U/StarIndicator.iml>
+#define IMAGEFILE <Controls4U/Controls4U/StarIndicator.iml>
 #include <Draw/iml.h>
 
 

@@ -3,14 +3,14 @@
 #include <CtrlLib/CtrlLib.h>
 #include "Controls4U.h"
 
-#define TFILE <Controls4U/Controls4U.t>
+#define TFILE <Controls4U/Controls4U/Controls4U.t>
 #include <Core/t.h>
 
 #define IMAGECLASS Controls4UImg
-#define IMAGEFILE <Controls4U/Controls4U.iml>
+#define IMAGEFILE <Controls4U/Controls4U/Controls4U.iml>
 #include <Draw/iml.h>
 
-#define TOPICFILE <Controls4U/src.tpp/all.i>
+#define TOPICFILE <Controls4U/Controls4U/src.tpp/all.i>
 #include <Core/topic_group.h>
 
 

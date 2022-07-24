@@ -4,11 +4,11 @@
 #define _JBControlsDemo_JBControlsDemo_h
 
 #include <CtrlLib/CtrlLib.h>
-#include <Controls4U/Controls4U.h>
+#include <Controls4U/Controls4U/Controls4U.h>
 
 using namespace Upp;
 
-#define LAYOUTFILE <examples/Controls4U_demo/JBControlsDemo.lay>
+#define LAYOUTFILE <Controls4U/examples/Controls4U_demo/JBControlsDemo.lay>
 #include <CtrlCore/lay.h>
 
 class JBControlsDemo : public WithJBControlsDemoLayout<StaticRect> {
