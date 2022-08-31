@@ -8,37 +8,6 @@
 
 namespace Upp {
 
-bool BSTRSet(const String str, BSTR &bstr) {
-	wchar_t *buffer;
-	DWORD size = MultiByteToWideChar(CP_UTF8, 0, str, -1, 0, 0);
-	if (!(buffer = (wchar_t *)GlobalAlloc(GMEM_FIXED, sizeof(wchar_t) * size)))
-		return false;
-
-	MultiByteToWideChar(CP_UTF8, 0, str, -1, buffer, size);
-	bstr = SysAllocString(buffer);
-	GlobalFree(buffer);
-	if (!bstr)
-		return false;
-	return true;
-}
-
-String BSTRGet(BSTR &bstr) {
-	if (!bstr)
-		return Null;
-	
-	char *buffer;
-	DWORD size = SysStringLen(bstr);
-	if (!(buffer = (char *)GlobalAlloc(GMEM_FIXED, sizeof(wchar_t) * size)))
-		return Null;
-	
-	size_t i = wcstombs(buffer, bstr, size);
-	buffer[i] = 0;
-	
-	String ret = buffer;
-	GlobalFree(buffer);
-	return ret;
-}
-
 OleStr::OleStr() {
     VariantInit(&var);
     VariantClear(&var); 	
