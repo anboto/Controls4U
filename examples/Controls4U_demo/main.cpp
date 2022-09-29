@@ -204,7 +204,6 @@ FileBrowser_Demo::FileBrowser_Demo() {
 	
 	browser.WhenAction = THISBACK(FileOpened);
 	browser.WhenSelected = THISBACK(FileSelected);
-	back.Set(Images::paper());
 }
 
 void FileBrowser_Demo::FileSelected() {

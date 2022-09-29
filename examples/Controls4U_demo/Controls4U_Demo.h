@@ -84,7 +84,6 @@ private:
 	ArrayCtrl left, top, bottom;
 };
 
-
 class Controls4U_Demo : public WithMain<TopWindow> {
 public:
 	typedef Controls4U_Demo CLASSNAME;

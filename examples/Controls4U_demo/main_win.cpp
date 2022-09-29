@@ -2,6 +2,7 @@
 // Copyright 2021 - 2022, the Anboto author and contributors
 #include <CtrlLib/CtrlLib.h>
 #include <Controls4U/Controls4U.h>
+#include <Functions4U/Functions4U_Gui.h>
 
 using namespace Upp;
 

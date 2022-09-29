@@ -308,6 +308,17 @@ bool SetFirstChild(Ctrl *ctrl) {
 		return false;
 }
 
+bool SetLastChild(Ctrl *ctrl) {
+	if (Ctrl *p = ctrl->GetParent()) {
+		if (p->GetIndexChild(p->GetChildCount()-1) != ctrl) {
+			p->RemoveChild(ctrl);
+			p->AddChild(ctrl, p->GetIndexChild(p->GetChildCount()-1));
+		}
+		return true;
+	} else
+		return false;
+}
+
 void ImagePopUp::Paint(Draw &w) {
 	Size sz = GetSize();
 	Size imagesize = image.GetSize();	
@@ -444,9 +455,8 @@ Image StaticImage::CursorImage(Point, dword) {
 
 void StaticImage::Layout() {
    	if (useAsBackground) {
-  		//Ctrl *q = GetFirstChild(); 
-		SetFirstChild(static_cast<Ctrl *>(this));
-		SizePos();
+		SetLastChild(static_cast<Ctrl *>(this));
+		//SizePos();		// To be fixed
 	}
 } 
 
