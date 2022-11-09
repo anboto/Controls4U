@@ -1,7 +1,3 @@
-TOPIC("ChangesLog_en-us")
-#include "ChangesLog_en-us.tppi"
-END_TOPIC
-
 TOPIC("Controls4UDemo_en-us")
 #include "Controls4UDemo_en-us.tppi"
 END_TOPIC

@@ -74,6 +74,17 @@ public:
 	StaticImageSet_Demo();
 };
 
+class Box_Demo : public WithBox<StaticRect> {
+public:
+	typedef Box_Demo CLASSNAME;
+	Box_Demo();
+	
+	Splitter splitter;
+	Box left, right;
+	ArrayCtrl lt, ct, rt, lb, cb, rb;
+	ArrayCtrl t, b;
+};
+
 class SplitterButton_Demo : public StaticRect {
 public:
 	typedef SplitterButton_Demo CLASSNAME;
@@ -99,12 +110,13 @@ public:
 	Functions4U_Demo functions4U_Demo;
 	PainterCanvas_Demo painterCanvas_Demo;
 	StaticImageSet_Demo staticImageSet_Demo;
+	Box_Demo box_Demo;
 	SplitterButton_Demo splitterButton_Demo;
 	AboutUpp aboutDlg;
 #if defined(PLATFORM_WIN32) 
-	Firefox_Demo firefox_Demo;
-	IExplorer_Demo iexplorer_Demo;
-	VLC_Demo vlc_Demo;
+	//Firefox_Demo firefox_Demo;
+	//IExplorer_Demo iexplorer_Demo;
+	//VLC_Demo vlc_Demo;
 #endif
 	int timerOn;
 	void Timer();

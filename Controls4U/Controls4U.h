@@ -882,7 +882,7 @@ public:
 private:
 	TextDisplay text;
 };
-	
+
 }
 	
 #endif

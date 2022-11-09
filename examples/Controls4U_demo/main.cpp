@@ -21,6 +21,7 @@ Controls4U_Demo::Controls4U_Demo() {
 	Sizeable().Zoomable();
 
 	grid.AddColumn("Demos");
+	controls.Add(&box_Demo);			grid.Add("Box");
 	controls.Add(&fileBrowser_Demo);	grid.Add("FileBrowser (experimental)");
 	controls.Add(&meter_Demo);			grid.Add("Meter & Knob");
 	controls.Add(&jbcontrols_Demo);		grid.Add("JBControls");
@@ -33,9 +34,9 @@ Controls4U_Demo::Controls4U_Demo() {
 	controls.Add(&functions4U_Demo);	grid.Add("Functions4U samples");
 	controls.Add(&splitterButton_Demo);	grid.Add("SplitterButton");
 #if defined(PLATFORM_WIN32) 	
-	controls.Add(&vlc_Demo);			grid.Add("VLC ActiveX");
-	controls.Add(&firefox_Demo);		grid.Add("Firefox ActiveX");
-	controls.Add(&iexplorer_Demo);		grid.Add("Internet Explorer ActiveX");
+	//controls.Add(&vlc_Demo);			grid.Add("VLC ActiveX");
+	//controls.Add(&firefox_Demo);		grid.Add("Firefox ActiveX");
+	//controls.Add(&iexplorer_Demo);	grid.Add("Internet Explorer ActiveX");
 #endif
 	controls.Add(&aboutDlg);			grid.Add("About U++");
 
@@ -58,9 +59,9 @@ void Controls4U_Demo::Timer() {
 	timerOn = false;
 	
 #if defined(PLATFORM_WIN32)
-	firefox_Demo.UpdateInfo();
-	iexplorer_Demo.UpdateInfo();
-	vlc_Demo.UpdateInfo();
+	//firefox_Demo.UpdateInfo();
+	//iexplorer_Demo.UpdateInfo();
+	//vlc_Demo.UpdateInfo();
 #endif	
 }
 
@@ -145,6 +146,50 @@ StaticClock_Demo::StaticClock_Demo() {
 	checkImage = false;
 	checkImage.WhenAction = THISBACK(ChangeProperties);
 	back.Set(Images::cream2());
+}
+
+Box_Demo::Box_Demo() {
+	CtrlLayout(*this);
+	
+	splitter.Horz(left.SizePos(), right.SizePos());
+	splitter.SetPos(7000, 0);
+	
+	lt.AddColumn("Left top");
+	ct.AddColumn("Centre (double) top");
+	rt.AddColumn("Right top");
+	lb.AddColumn("Left bottom");
+	cb.AddColumn("Centre (double) bottom");
+	rb.AddColumn("Right bottom");
+	t.AddColumn("Top");
+	b.AddColumn("Bottom (Square)");
+	for (int i = 0; i < 100; ++i) {
+		lt.Add(i);
+		ct.Add(i);
+		rt.Add(i);
+		lb.Add(i);
+		cb.Add(i);
+		rb.Add(i);
+		t.Add(i);
+		b.Add(i);
+	}
+	
+	left.Add(lt, 0, 0);
+	left.Add(ct, 0, 1);
+	left.Add(rt, 0, 2);
+	left.Add(lb, 1, 0);
+	left.Add(cb, 1, 1);
+	left.Add(rb, 1, 2);
+	
+	left.SetWidths({1, 2, 1});
+	
+	right.Add(t, 0, 0);
+	right.Add(b, 1, 0);
+	
+	right.WhenHeights = [&](int width, int height, Vector<int> &heights) {
+		heights.SetCount(2);
+		heights[0] = max(0, height - width);
+		heights[1] = width;
+	};
 }
 
 void Meter_Demo::ChangeValueKnob(Knob *knob, Meter *meter) {

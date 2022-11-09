@@ -184,13 +184,13 @@ void SplitterButton::SetArrows() {
 		button2.SetImage(splitter.IsVert() ? CtrlImg::smalldown() : CtrlImg::smallright());
 	}
 }
-
-CH_STYLE(Box, Style, StyleDefault) {
+/*
+CH_STYLE(BoxOld, Style, StyleDefault) {
 	width = Ctrl::HorzLayoutZoom(2);
 	vert[0] = horz[0] = SColorFace();
 	vert[1] = horz[1] = GUI_GlobalStyle() >= GUISTYLE_XP ? Blend(SColorHighlight, SColorFace)
 	                                                     : SColorShadow();
 	dots = false;
-}
+}*/
 	
 }

@@ -6,6 +6,10 @@ TOPIC("About_en-us")
 #include "About_en-us.tppi"
 END_TOPIC
 
+TOPIC("Box_en-us")
+#include "Box_en-us.tppi"
+END_TOPIC
+
 TOPIC("Controls4U_en-us")
 #include "Controls4U_en-us.tppi"
 END_TOPIC
