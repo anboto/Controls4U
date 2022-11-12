@@ -154,6 +154,9 @@ private:
 		int horiz = GetSize().cx;
 		int vert = GetSize().cy;
 		
+		if (horiz == 0 || vert == 0)
+			return;
+		
 		if (WhenWidths)
 			WhenWidths(horiz, vert, widths);
 			
