@@ -58,22 +58,7 @@ private:
 	void OnLayout(int pos);
 	void SetArrows();
 };
-/*
-class BoxOld : public Splitter {
-public:
-	typedef BoxOld CLASSNAME;
 
-	BoxOld() : Splitter() {SetStyle(StyleDefault());}
-
-	static const Style& StyleDefault();
-
-private:	
-	virtual void   MouseMove(Point , dword ) 	{};
-	virtual void   LeftDown(Point , dword ) 	{};
-	virtual void   LeftUp(Point , dword ) 		{};
-	virtual Image  CursorImage(Point , dword ) {return Null;};	
-};
-*/
 class Box : public StaticRect {
 typedef Box CLASSNAME;
 
