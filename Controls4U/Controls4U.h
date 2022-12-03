@@ -51,7 +51,7 @@ public:
 	void Init();
 	void ClearTypes()								{/*InitFs();	*/names.Clear();	exts.Clear();}
 	Vector<String> names, exts;
-	void Type(const char *name, const char *ext)	{/*InitFs();	*/names << name;	exts << ext;}
+	EditFileFolder &Type(const char *name, const char *ext)	{/*InitFs();	*/names << name;	exts << ext; return *this;}
 	int activeType = Null;
 	void ActiveType(int type)						{/*InitFs();	*/activeType = type;}	
 	bool allFilesType = false;
