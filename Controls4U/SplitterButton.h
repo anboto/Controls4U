@@ -22,7 +22,12 @@ public:
 	SplitterButton &SetPositions(int pos1, int pos2, int pos3);
 	const Vector<int> &GetPositions() const {return positions;}
 	
-	void SetPos(int p)						{splitter.SetPos(p);}
+	void SetPos(int p) {
+		if (IsNull(oldPos) || p != oldPos) {
+			oldPos = p;
+			splitter.SetPos(p);
+		}
+	}
 	int GetPos()							{return splitter.GetPos();}
 	
 	SplitterButton &SetInitialPositionId(int id);
@@ -38,6 +43,7 @@ public:
 	void SetButton(int id);
 	
 private:
+	int oldPos = Null;
 	bool movingRight;		
 	int buttonWidth;
 	Vector<int> positions;
