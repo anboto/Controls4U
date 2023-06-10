@@ -3,13 +3,8 @@
 #ifndef _Controls4U_Controls4U_h_
 #define _Controls4U_Controls4U_h_
 
-#include <PolyXML/PolyXML.h>
 #include <Painter/Painter.h>
 #include <Functions4U/Functions4U_Gui.h>
-#if defined(PLATFORM_WIN32) 
-#include <Controls4U/ActiveX.h>
-#endif
-#include <Controls4U/PainterCanvas.h>
 #include <Controls4U/SliderCtrlX.h>
 #include <Controls4U/StarIndicator.h>
 #include <Controls4U/SplitterButton.h>

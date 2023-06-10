@@ -26,14 +26,6 @@ TOPIC("EditFolder_en-us")
 #include "EditFolder_en-us.tppi"
 END_TOPIC
 
-TOPIC("FirefoxBrowser_en-us")
-#include "FirefoxBrowser_en-us.tppi"
-END_TOPIC
-
-TOPIC("InternetExplorerBrowser_en-us")
-#include "InternetExplorerBrowser_en-us.tppi"
-END_TOPIC
-
 TOPIC("Knob_en-us")
 #include "Knob_en-us.tppi"
 END_TOPIC
@@ -88,9 +80,5 @@ END_TOPIC
 
 TOPIC("StaticRectangle_en-us")
 #include "StaticRectangle_en-us.tppi"
-END_TOPIC
-
-TOPIC("VLCPlayer_en-us")
-#include "VLCPlayer_en-us.tppi"
 END_TOPIC
 

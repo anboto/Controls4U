@@ -5,10 +5,6 @@
 
 using namespace Upp;
 
-
-#if defined(PLATFORM_WIN32) 	
-#include "Controls4U_Demo_win.h"
-#endif
 #include "JBControlsDemo.h"
 #include "Controls4U_Demo.h"
 
@@ -30,14 +26,8 @@ Controls4U_Demo::Controls4U_Demo() {
 	controls.Add(&staticImageSet_Demo);	grid.Add("StaticImageSet");
 	controls.Add(&staticCtrls_Demo);	grid.Add("Static Controls");
 	controls.Add(&staticCtrlsTest_Demo);grid.Add("Static Controls Test");
-	//tab.Add(painterCanvas_Demo);		grid.Add("PainterCanvas (experimental)");
 	controls.Add(&functions4U_Demo);	grid.Add("Functions4U samples");
 	controls.Add(&splitterButton_Demo);	grid.Add("SplitterButton");
-#if defined(PLATFORM_WIN32) 	
-	//controls.Add(&vlc_Demo);			grid.Add("VLC ActiveX");
-	//controls.Add(&firefox_Demo);		grid.Add("Firefox ActiveX");
-	//controls.Add(&iexplorer_Demo);	grid.Add("Internet Explorer ActiveX");
-#endif
 	controls.Add(&aboutDlg);			grid.Add("About U++");
 
 	for (int i = 0; i < controls.GetCount(); ++i) 
@@ -56,13 +46,7 @@ void Controls4U_Demo::Timer() {
 		return;
 	timerOn = true;
 	staticClock_Demo.UpdateInfo();
-	timerOn = false;
-	
-#if defined(PLATFORM_WIN32)
-	//firefox_Demo.UpdateInfo();
-	//iexplorer_Demo.UpdateInfo();
-	//vlc_Demo.UpdateInfo();
-#endif	
+	timerOn = false;	
 }
 
 GUI_APP_MAIN {
@@ -303,7 +287,7 @@ void Functions4U_Demo::OnSet() {
 
 	userEquation.SetData(myqtf);	
 }
-
+/*
 PainterCanvas_Demo::PainterCanvas_Demo() {
 	CtrlLayout(*this);
 
@@ -313,7 +297,7 @@ PainterCanvas_Demo::PainterCanvas_Demo() {
 	LineElem &elem = static_cast<LineElem&>(painterCanvas.elemList.elems.Add(new LineElem(100, 100, 200, 200)));
 	elem.style.SetStrokeColor(Green()).SetStrokeWidth(3);
 }
-
+*/
 StaticImageSet_Demo::StaticImageSet_Demo() {
 	CtrlLayout(*this);
 

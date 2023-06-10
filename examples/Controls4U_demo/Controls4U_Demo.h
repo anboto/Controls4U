@@ -62,12 +62,6 @@ public:
 	void OnSet();
 };
 
-class PainterCanvas_Demo : public WithPainterCanvas<StaticRect> {
-public:
-	typedef PainterCanvas_Demo CLASSNAME;
-	PainterCanvas_Demo();
-};
-
 class StaticImageSet_Demo : public WithStaticImageSet<StaticRect> {
 public:
 	typedef StaticImageSet_Demo CLASSNAME;
@@ -108,16 +102,11 @@ public:
 	JBControlsDemo jbcontrols_Demo;
 	FileBrowser_Demo fileBrowser_Demo;
 	Functions4U_Demo functions4U_Demo;
-	PainterCanvas_Demo painterCanvas_Demo;
 	StaticImageSet_Demo staticImageSet_Demo;
 	Box_Demo box_Demo;
 	SplitterButton_Demo splitterButton_Demo;
 	AboutUpp aboutDlg;
-#if defined(PLATFORM_WIN32) 
-	//Firefox_Demo firefox_Demo;
-	//IExplorer_Demo iexplorer_Demo;
-	//VLC_Demo vlc_Demo;
-#endif
+
 	int timerOn;
 	void Timer();
 	
