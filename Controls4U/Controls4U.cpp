@@ -1113,13 +1113,10 @@ void StaticClock::SetTime(int h, int n, int s) {
 }
 
 struct StaticClocks;
-void StaticClockThread(StaticClocks *gui);
 
 struct StaticClocks {
 	Array <StaticClock *> clocks;
 	volatile Atomic running, kill;
-	
-	friend void StaticClockThread(StaticClocks *gui);
 	
 	StaticClocks() {
 		running = kill = 0;
@@ -1134,7 +1131,17 @@ struct StaticClocks {
 #ifdef flagMT
 		if (!running) {
 			AtomicInc(running);
-			Thread().Run(callback1(StaticClockThread, this));
+			Thread().Run([&] {
+				while (true) {
+					if (kill) {
+						AtomicDec(running);
+						return;		
+					}
+					for (int i = 0; i < GetCount(); ++i) 
+						PostCallback(callback(clocks[i], &StaticClock::SetTimeRefresh));
+					Sleep(200);
+				}
+			});
 		}
 #endif
 	}
@@ -1158,20 +1165,7 @@ struct StaticClocks {
 	int GetCount() {return clocks.GetCount();}
 };
 
-
 StaticClocks clocks;
-
-void StaticClockThread(StaticClocks *gui) {
-	while (true) {
-		if (gui->kill) {
-			AtomicDec(gui->running);
-			return;		
-		}
-		for (int i = 0; i < gui->GetCount(); ++i) 
-			PostCallback(callback(gui->clocks[i], &StaticClock::SetTimeRefresh));
-		Sleep(200);
-	}
-}
 
 StaticClock& StaticClock::SetAuto(bool mode) {
 	autoMode = mode;
@@ -2083,11 +2077,9 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 }
 
 bool HasSubfolders(String folder, int ) {
-	FindFile ff(AppendFileNameX(folder, "*.*"));
-	while(ff) {
+	for (FindFile ff(AppendFileNameX(folder, "*.*")); ff; ff++) {
 		if (DirectoryExistsX(AppendFileNameX(folder, ff.GetName())))
 			return true;
-		ff.Next();
 	}
 	return false;
 }
