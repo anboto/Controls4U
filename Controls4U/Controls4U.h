@@ -878,6 +878,104 @@ private:
 	TextDisplay text;
 };
 
+class DropCtrlDialog : public StaticRect {
+public:
+	DropCtrlDialog() : popup(false) {SetFrame(BlackFrame());}
+
+	Event<> WhenClose;
+	
+	const Size &ComputeSize() {
+		if (IsNull(size))
+			size = GetSize();
+		return size;
+	}
+
+	void PopUp(Ctrl *owner, const Rect& rt){
+		Close();
+		SetRect(rt);
+		Ctrl::PopUp(owner, true, true, GUI_DropShadows());
+	}
+	
+private:
+	bool popup;
+	Size size = Null;
+	
+	bool IsPopUp() const {return popup || Ctrl::IsPopUp();}
+	
+	virtual void Deactivate() {
+		if(IsOpen() && IsPopUp()) {
+			WhenClose();
+			IgnoreMouseClick();
+			Close();
+		}
+	}
+};
+
+class DropCtrl : public Ctrl {
+public:
+	typedef DropCtrl CLASSNAME;
+
+	DropCtrl() {
+		drop.SetImage(CtrlImg::SortDown());
+		drop.WhenAction = [=](){OnDrop();};
+		Add(drop.SizePos());
+	}
+	
+	DropCtrl &SetCtrl(DropCtrlDialog &_cc) 	{cc = &_cc;		return *this;}
+	DropCtrl &Tip(String txt)				{drop.Tip(txt);	return *this;}
+	
+	virtual void GotFocus()  		{drop.RefreshFrame(); }
+	virtual void LostFocus() 		{drop.RefreshFrame(); }
+	virtual Size GetMinSize() const { return drop.GetMinSize(); }
+
+private:
+	Button drop;
+	DropCtrlDialog *cc = 0;
+	
+	void OnClose() {
+		this->SetFocus();
+	}
+
+	void OnDrop() {
+		if(!this->IsEditable())
+			return;
+
+		ASSERT(cc);
+		if (!cc)
+			return;
+		
+		Size sz = cc->ComputeSize();
+
+		int width = sz.cx;
+		int height = sz.cy;
+
+		Rect rw = this->Ctrl::GetWorkArea();
+		Rect rs = this->GetScreenRect();
+		Rect r(rs.left, rs.bottom, rs.left + width, rs.bottom + height);
+
+		if (r.bottom > rw.bottom) {
+			r.top = rs.top - height;
+			r.bottom = rs.top;
+		}
+		if (r.right > rw.right) {
+			int diff;
+			if(rs.right <= rw.right)
+				diff = rs.right - r.right;
+			else
+				diff = rw.right - r.right;
+
+			r.left += diff;
+			r.right += diff;
+		}
+		if (r.left < rw.left) {
+			int diff = rw.left - r.left;
+			r.left += diff;
+			r.right += diff;
+		}
+		cc->PopUp(this, r);
+	}
+};
+
 }
 	
 #endif

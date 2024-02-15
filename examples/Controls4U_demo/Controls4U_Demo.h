@@ -89,6 +89,20 @@ private:
 	ArrayCtrl left, top, bottom;
 };
 
+class DemoDrop : public WithDemoDropCtrl<DropCtrlDialog> {
+public:
+	DemoDrop();
+	Event <> WhenSel;
+};
+
+class Drop_Demo : public WithDrop<StaticRect> {
+public:
+	typedef Box_Demo CLASSNAME;
+	Drop_Demo();
+	
+	DemoDrop demo;
+};
+
 class Controls4U_Demo : public WithMain<TopWindow> {
 public:
 	typedef Controls4U_Demo CLASSNAME;
@@ -104,6 +118,7 @@ public:
 	Functions4U_Demo functions4U_Demo;
 	StaticImageSet_Demo staticImageSet_Demo;
 	Box_Demo box_Demo;
+	Drop_Demo drop_Demo;
 	SplitterButton_Demo splitterButton_Demo;
 	AboutUpp aboutDlg;
 

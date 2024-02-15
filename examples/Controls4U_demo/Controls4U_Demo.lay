@@ -174,3 +174,17 @@ LAYOUT(Box, 400, 200)
 	ITEM(Splitter, splitter, HSizePosZ(0, 0).VSizePosZ(0, 0))
 END_LAYOUT
 
+LAYOUT(Drop, 292, 200)
+	ITEM(DropCtrl, drop, LeftPosZ(152, 16).TopPosZ(112, 20))
+	ITEM(StaticArrow, dv___1, SetOrientation("\\").SetEnds("->").LeftPosZ(120, 32).TopPosZ(48, 60))
+	ITEM(Upp::Label, dv___2, SetLabel(t_("Click here to see the DropCtrl")).LeftPosZ(48, 152).TopPosZ(32, 19))
+	ITEM(Upp::Label, dv___3, SetLabel(t_("Selected:")).LeftPosZ(176, 48).TopPosZ(92, 19))
+	ITEM(Upp::EditInt, val, SetEditable(false).LeftPosZ(176, 44).TopPosZ(112, 19))
+END_LAYOUT
+
+LAYOUT(DemoDropCtrl, 296, 272)
+	ITEM(Upp::ArrayCtrl, array, LeftPosZ(0, 236).TopPosZ(0, 268))
+	ITEM(Upp::Label, dv___1, SetLabel(t_("Selected:")).LeftPosZ(244, 48).TopPosZ(0, 19))
+	ITEM(Upp::EditInt, val, SetEditable(false).LeftPosZ(244, 44).TopPosZ(20, 19))
+END_LAYOUT
+

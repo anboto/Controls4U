@@ -18,6 +18,7 @@ Controls4U_Demo::Controls4U_Demo() {
 
 	grid.AddColumn("Demos");
 	controls.Add(&box_Demo);			grid.Add("Box");
+	controls.Add(&drop_Demo);			grid.Add("DropCtrl");
 	controls.Add(&fileBrowser_Demo);	grid.Add("FileBrowser (experimental)");
 	controls.Add(&meter_Demo);			grid.Add("Meter & Knob");
 	controls.Add(&jbcontrols_Demo);		grid.Add("JBControls");
@@ -34,7 +35,7 @@ Controls4U_Demo::Controls4U_Demo() {
 		rect.Add(controls[i]->SizePos());
 	
 	grid.WhenSel << THISBACK (OnGridSel);
-	grid.SetCursor(9);
+	grid.SetCursor(1);
 	OnGridSel();
 	
 	timerOn = false;
@@ -323,6 +324,23 @@ SplitterButton_Demo::SplitterButton_Demo() {
 	}
 }
 
+DemoDrop::DemoDrop() {
+	CtrlLayout(*this);
+	array.AddColumn("Data to select");
+	for (int row = 0; row < 100; ++row)
+		array.Add(row);
+	array.WhenSel = [&]() {
+		WhenSel();
+		val <<= array.Get(array.GetCursor(), 0);
+	};	
+	array.SetCursor(0);
+}
+	
+Drop_Demo::Drop_Demo() {
+	CtrlLayout(*this);
+	drop.SetCtrl(demo).Tip("Click here to select data");
+	demo.WhenSel = [&]() {val <<= demo.array.Get(demo.array.GetCursor(), 0);};	
+}
 
 void Controls4U_Demo::OnGridSel() {
 	int row = grid.GetCursor();

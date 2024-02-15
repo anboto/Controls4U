@@ -1356,3 +1356,24 @@ ctrl HyperlinkLabel {
 		.SetFont = Arial(10).Bold().Italic();
 	}
 };
+
+ctrl DropCtrl {
+	group "Push";
+
+	GetMinSize() { sz = XMinSize(); sz.cy += 2; return sz; }
+	GetStdSize() { sz = GetMinSize(); sz.cx *= 7; return sz; }
+
+	Text   Tip @1;
+
+	Paint(w) {
+		r = GetRect();
+		DrawCtrlFrame(w, r, .SetFrame);
+		DrawButtonFrame(w, r);
+		sz = Size(r.right - r.left, r.bottom - r.top);
+		n = int(sz.cy / 8);
+		w.DrawRect(r.left, r.top, sz.cx, sz.cy, :SWhiteGray);
+		img = "CtrlImg::SortDown";
+		imgsize = GetImageSize(img);
+		w.DrawImage(r.left + (sz.cx - imgsize.cx)/2, r.top + (sz.cy - imgsize.cy)/2, img);
+	}
+}
