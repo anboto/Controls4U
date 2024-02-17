@@ -918,14 +918,13 @@ public:
 	DropCtrl() {
 		drop.SetImage(CtrlImg::SortDown());
 		drop.WhenAction = [=](){OnDrop();};
+		WhenAction = [=](){OnDrop();};
 		Add(drop.SizePos());
 	}
 	
 	DropCtrl &SetCtrl(DropCtrlDialog &_cc) 	{cc = &_cc;		return *this;}
 	DropCtrl &Tip(String txt)				{drop.Tip(txt);	return *this;}
-	
-	virtual void GotFocus()  		{drop.RefreshFrame(); }
-	virtual void LostFocus() 		{drop.RefreshFrame(); }
+
 	virtual Size GetMinSize() const { return drop.GetMinSize(); }
 
 private:
@@ -974,6 +973,9 @@ private:
 		}
 		cc->PopUp(this, r);
 	}
+		
+	virtual void GotFocus()  		{drop.RefreshFrame(); }
+	virtual void LostFocus() 		{drop.RefreshFrame(); }
 };
 
 }
