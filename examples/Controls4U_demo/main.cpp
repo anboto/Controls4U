@@ -260,9 +260,10 @@ Functions4U_Demo::Functions4U_Demo() {
 	QtfRichObject e = QtfEquation("summation(a+b*x+c*x^2+d*x^3, x = h, h+1)*dx = SI_h");
 	QtfRichObject f = QtfEquation("exp(-1/2*(b-r)/a*t)*r*a*(d*b*w^2*a+d*r*w^2*a-d*r*c+d*b*c+2*f1*w*a*c)/((2*w^2*a)^2+b^2-2*c*a-b*r)");
 	
-	myqtf << "[R3 This are some formulas in QTF:&" << a << "&" << b << "&" << c << "&" << d << "&" << e << "&" << f;
+	myqtf << "[R3 This are some formulas in QTF:&" << a << "&" << b << "&" << c << "&" << d;// << "&" << e;// << "&" << f;
 
 	equation.SetData(myqtf);
+	int ss = equation.GetCy();
 
 	butDiff.WhenAction = THISBACK(OnDiff);	
 	butPatch.WhenAction = THISBACK(OnPatch);
