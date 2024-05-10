@@ -1,8 +1,3 @@
-LAYOUT(Main, 592, 504)
-	ITEM(Upp::ArrayCtrl, grid, HSizePosZ(4, 384).VSizePosZ(4, 4))
-	ITEM(Upp::StaticRect, rect, SetFrame(ThinInsetFrame()).HSizePosZ(212, 4).VSizePosZ(4, 4))
-END_LAYOUT
-
 LAYOUT(EditFileFolder, 672, 304)
 	ITEM(StaticImage, clipImage, SetBackground(Upp::Color(229, 229, 229)).SetFrame(ThinInsetFrame()).HSizePosZ(260, 8).VSizePosZ(8, 12))
 	ITEM(EditFile, fileName, LeftPosZ(8, 240).TopPosZ(28, 19))

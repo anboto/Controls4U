@@ -12,31 +12,32 @@ using namespace Upp;
 #define IMAGECLASS Images
 #include <Draw/iml.h>
 
+
 Controls4U_Demo::Controls4U_Demo() {
-	CtrlLayout(*this, "Controls4U Demo");
+	Add(selector.SizePos());
+	Title("Controls4U Demo");
 	Sizeable().Zoomable();
 
-	grid.AddColumn("Demos");
-	controls.Add(&box_Demo);			grid.Add("Box");
-	controls.Add(&drop_Demo);			grid.Add("DropCtrl");
-	controls.Add(&fileBrowser_Demo);	grid.Add("FileBrowser (experimental)");
-	controls.Add(&meter_Demo);			grid.Add("Meter & Knob");
-	controls.Add(&jbcontrols_Demo);		grid.Add("JBControls");
-	controls.Add(&staticClock_Demo);	grid.Add("StaticClock");
-	controls.Add(&editFileFolder_Demo);	grid.Add("StaticImage & EditFile/Folder");
-	controls.Add(&staticImageSet_Demo);	grid.Add("StaticImageSet");
-	controls.Add(&staticCtrls_Demo);	grid.Add("Static Controls");
-	controls.Add(&staticCtrlsTest_Demo);grid.Add("Static Controls Test");
-	controls.Add(&functions4U_Demo);	grid.Add("Functions4U samples");
-	controls.Add(&splitterButton_Demo);	grid.Add("SplitterButton");
-	controls.Add(&aboutDlg);			grid.Add("About U++");
+	selector.Add(box_Demo, "Box");
+	selector.Add(drop_Demo, "DropCtrl");
+	selector.Add(fileBrowser_Demo, "FileBrowser (experimental)");
+	selector.Add(meter_Demo, "Meter & Knob");
+	selector.Add(jbcontrols_Demo, "JBControls");
+	selector.Add(staticClock_Demo, "StaticClock");
+	selector.Add(editFileFolder_Demo, "StaticImage & EditFile/Folder");
+	selector.Add(staticImageSet_Demo, "StaticImageSet");
+	selector.Add(staticCtrls_Demo, "Static Controls");
+	selector.Add(staticCtrlsTest_Demo, "Static Controls Test");
+	selector.Add(functions4U_Demo, "Functions4U samples");
+	selector.Add(splitterButton_Demo, "SplitterButton");
+	selector.Add(aboutDlg, "About U++");
 
-	for (int i = 0; i < controls.GetCount(); ++i) 
-		rect.Add(controls[i]->SizePos());
-	
-	grid.WhenSel << THISBACK (OnGridSel);
-	grid.SetCursor(1);
-	OnGridSel();
+	selector.WhenSel = [&](int row) {
+		Cout() << "Selected: " << row << "\n";
+	};
+
+	selector.SetCursor(1);
+	//OnGridSel();
 	
 	timerOn = false;
 	timeCallback.Set(-100, THISBACK(Timer));
@@ -263,7 +264,7 @@ Functions4U_Demo::Functions4U_Demo() {
 	myqtf << "[R3 This are some formulas in QTF:&" << a << "&" << b << "&" << c << "&" << d << "&" << e << "&" << f;
 
 	equation.SetData(myqtf);
-	int ss = equation.GetCy();
+	//int ss = equation.GetCy();
 
 	butDiff.WhenAction = THISBACK(OnDiff);	
 	butPatch.WhenAction = THISBACK(OnPatch);
@@ -289,17 +290,7 @@ void Functions4U_Demo::OnSet() {
 
 	userEquation.SetData(myqtf);	
 }
-/*
-PainterCanvas_Demo::PainterCanvas_Demo() {
-	CtrlLayout(*this);
 
-	//imgCtrl.SetImage(Images::ClockImage());
-	//LoadSvg(drawingCanvas, AppendFileNameX(GetDesktopFolder(), "svg/demo.svg"));
-	
-	LineElem &elem = static_cast<LineElem&>(painterCanvas.elemList.elems.Add(new LineElem(100, 100, 200, 200)));
-	elem.style.SetStrokeColor(Green()).SetStrokeWidth(3);
-}
-*/
 StaticImageSet_Demo::StaticImageSet_Demo() {
 	CtrlLayout(*this);
 
@@ -342,15 +333,3 @@ Drop_Demo::Drop_Demo() {
 	drop.SetCtrl(demo).Tip("Click here to select data");
 	demo.WhenSel = [&]() {val <<= demo.array.Get(demo.array.GetCursor(), 0);};	
 }
-
-void Controls4U_Demo::OnGridSel() {
-	int row = grid.GetCursor();
-	Cout() << "Selected: " << row << "\n";
-	for (int i = 0; i < controls.GetCount(); ++i) {
-		if (i == row)
-			controls[i]->Show();
-		else 
-			controls[i]->Hide();
-	}
-}
-

@@ -103,11 +103,12 @@ public:
 	DemoDrop demo;
 };
 
-class Controls4U_Demo : public WithMain<TopWindow> {
+class Controls4U_Demo : public TopWindow {
 public:
 	typedef Controls4U_Demo CLASSNAME;
 	Controls4U_Demo();
 	
+	VerticalSelector selector;
 	EditFileFolder_Demo editFileFolder_Demo;
 	StaticCtrls_Demo staticCtrls_Demo;
 	StaticCtrlsTest_Demo staticCtrlsTest_Demo;
@@ -128,7 +129,6 @@ public:
 private:
 	Vector<StaticRect *> controls;
 	TimeCallback timeCallback;
-	void OnGridSel();
 };
 
 #endif

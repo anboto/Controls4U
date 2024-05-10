@@ -978,6 +978,87 @@ private:
 	virtual void LostFocus() 		{drop.RefreshFrame(); }
 };
 
+class VerticalSelector : public StaticRect {
+public:
+	typedef VerticalSelector CLASSNAME;
+	
+	VerticalSelector() {
+		grid.AddColumn("");
+		grid.NoHeader().AutoHideSb();
+	
+		SetWidth(184);
+
+		grid.WhenSel = [&]() {
+			int row = grid.GetCursor();
+			for (int i = 0; i < controls.GetCount(); ++i) {
+				if (i == row)
+					controls[i]->Show();
+				else 
+					controls[i]->Hide();
+			}
+			WhenSel(row);
+		};
+	}
+	
+	VerticalSelector &SetWidth(int w) {
+		StaticRect::Add(grid.LeftPosZ(2, w).VSizePosZ(2, 2));
+		StaticRect::Add(rect.HSizePosZ(w + 4, 2).VSizePosZ(2, 2));
+		
+		Layout();
+		
+		return *this;
+	}
+	
+	VerticalSelector &Add(Ctrl &r, String name) {
+		controls.Add(&r);
+		grid.Add(name);
+		rect.Add(r.SizePos());
+		grid.SetCursor(size()-1);
+		return *this;
+	}
+	
+	VerticalSelector &SetCount(int num) {
+		if (size() != num) {
+			int id = GetCursor();
+			controls.SetCount(num);
+			grid.SetCount(num);
+			SetCursor(min(id, size()-1));
+		} 
+		return *this;
+	}
+	
+	VerticalSelector &Clear() {
+		controls.Clear();
+		grid.Clear();
+		return *this;
+	}
+	
+	VerticalSelector &Remove(int id) {
+		controls.Remove(id);
+		grid.Remove(id);	
+		return *this;
+	}
+	
+	VerticalSelector &SetCursor(int id) {
+		grid.SetCursor(id);
+		return *this;
+	}
+
+	int GetCursor() 		{return grid.GetCursor();}
+	
+	const Ctrl *Get(int id) const {return controls[id];}
+	
+	int size()	{return controls.size();}
+	
+	Function<void(int)> WhenSel;
+		
+	ArrayCtrl grid;
+	StaticRect rect;	
+	
+private:
+	Vector<Ctrl *> controls;
+};
+
 }
 	
 #endif
