@@ -1011,21 +1011,34 @@ public:
 	
 	VerticalSelector &Add(Ctrl &r, String name) {
 		controls.Add(&r);
-		grid.Add(name);
 		rect.Add(r.SizePos());
+		grid.Add(name);
 		grid.SetCursor(size()-1);
 		return *this;
 	}
-	
-	VerticalSelector &SetCount(int num) {
-		if (size() != num) {
-			int id = GetCursor();
-			controls.SetCount(num);
-			grid.SetCount(num);
-			SetCursor(min(id, size()-1));
-		} 
+	/*
+	VerticalSelector &Set(int id, Ctrl &r, String name) {
+		if (controls[id])
+			rect.RemoveChild(controls[id]);
+		controls[id] = &r;
+		rect.Add(r.SizePos());
+		grid.Set(id, 0, name);
 		return *this;
-	}
+	}*/
+	/*
+	VerticalSelector &SetCount(int num) {
+		int id = GetCursor();
+		if (size() != num) {
+			if (size() > num) {
+				for (int i = size()-1; i >= num; --i)
+					rect.RemoveChild(controls[i]);
+			}
+			controls.SetCount(num, nullptr);
+			grid.SetCount(num);
+		} 
+		SetCursor(min(id, size()-1));
+		return *this;
+	}*/
 	
 	VerticalSelector &Clear() {
 		controls.Clear();
@@ -1057,6 +1070,109 @@ public:
 	
 private:
 	Vector<Ctrl *> controls;
+};
+
+class ConsoleText : public LineEdit {
+public:
+	ConsoleText() : textColor(SColorText), paperColor(SColorPaper) {/*SetReadOnly();*/}
+	void SetTextColor(Color c)  {textColor = c;}
+	void SetPaperColor(Color c) {paperColor = c;}
+	void MessageLine(String text, Color tc = Null, Color pc = Null) {
+		if (!text.IsEmpty())
+			Message(text + String("\n"), tc, pc);
+	}
+	void Message(String text, Color tc = Null, Color pc = Null) {if (!text.IsEmpty()) Print(text, tc, pc);}
+	void NewClear() {
+		textColorLine.Clear();
+		paperColorLine.Clear();
+		Clear();
+	}
+	void SetLogFile(String _logFile, bool deleteOld = true) {
+		logFile = _logFile;
+		if (deleteOld)
+			FileDelete(logFile);
+		else
+			FileStrAppend(logFile, "\n===== " + Format(t_("New log begins at %"), GetSysTime()) + " =====\n");
+	}
+	void Print(String stext, Color tc = Null, Color pc = Null) {
+		if (stext.IsEmpty())
+			return;
+		WString wtext(stext);
+		int pos = 0;
+		int cursorLine = GetCursorLine();
+		int endLine = GetLine(GetLength());
+		bool scrollEnd = (endLine <= cursorLine + 1);
+		String line;
+		while(true) {
+			line.Clear();
+			bool addRet = false;
+			while (pos < wtext.GetCount()) {	// Added to handle \r
+				int ch = wtext[pos];
+				if (ch == '\r') {
+					if (pos + 1 < wtext.GetCount() && wtext[pos + 1] == '\n') {
+						pos += 2;
+						addRet = true;
+					} else {
+						int ps = GetLength();
+						GetLinePos(ps);
+						Remove(GetLength() - ps, ps);
+						pos++;
+					}
+					break;
+				} else if (ch == '\n') {
+					pos++;
+					addRet = true;
+					break;	
+				} else
+					line.Cat(ch);
+				pos++;
+			}
+			if (pos >= wtext.GetCount())
+				pos = Null;
+			//String line = Tokenize2(text, "\n", pos);
+			Insert(GetLength(), line);	
+			if (!logFile.IsVoid())
+				FileStrAppend(logFile, line);
+			if (!IsNull(pos) || textColorLine.IsEmpty()) {
+				if (IsNull(tc))
+					textColorLine << textColor;
+				else
+					textColorLine << tc;
+				if (IsNull(pc))
+					paperColorLine << paperColor;
+				else
+					paperColorLine << pc;	
+			}
+			if (addRet) {
+				Insert(GetLength(), "\n");
+				if (!logFile.IsVoid())
+					FileStrAppend(logFile, "\r\n");
+			}
+			if (IsNull(pos)) 
+				break;
+		}
+		if (scrollEnd) {
+			ScrollEnd();
+			SetCursor(GetLength());
+			sb.HorzBegin();
+		}
+	}
+	
+private:
+	Vector<Color> textColorLine, paperColorLine; 
+	Color textColor, paperColor;
+	String logFile;
+    virtual void  HighlightLine(int line, Vector<Highlight>& h, int pos) {
+        for (int i = 0; i < h.GetCount(); i++) {
+            if (line > textColorLine.GetCount() - 1) {
+            	h[i].ink = SColorText;
+            	h[i].paper = SColorPaper;
+            } else {
+                h[i].ink = textColorLine[line];
+                h[i].paper = paperColorLine[line];
+            }
+        }
+    }
 };
 
 }
