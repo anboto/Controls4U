@@ -882,7 +882,7 @@ class DropCtrlDialog : public StaticRect {
 public:
 	DropCtrlDialog() : popup(false) {SetFrame(BlackFrame());}
 
-	Event<> WhenClose;
+	Event<> WhenClose, ReactivateParent;
 	
 	const Size &ComputeSize() {
 		if (IsNull(size))
@@ -894,6 +894,11 @@ public:
 		Close();
 		SetRect(rt);
 		Ctrl::PopUp(owner, true, true, GUI_DropShadows());
+	}
+	
+	virtual void Close() {
+		ReactivateParent();
+		StaticRect::Close();
 	}
 	
 private:
@@ -911,6 +916,7 @@ private:
 	}
 };
 
+
 class DropCtrl : public Ctrl {
 public:
 	typedef DropCtrl CLASSNAME;
@@ -922,18 +928,35 @@ public:
 		Add(drop.SizePos());
 	}
 	
-	DropCtrl &SetCtrl(DropCtrlDialog &_cc) 	{cc = &_cc;		return *this;}
-	DropCtrl &Tip(String txt)				{drop.Tip(txt);	return *this;}
-
-	virtual Size GetMinSize() const { return drop.GetMinSize(); }
-
+	DropCtrl &SetCtrl(DropCtrlDialog &_cc) 	{
+		cc = &_cc;				
+		cc->ReactivateParent = [=]() {Reactivate();};
+		return *this;
+	}
+	DropCtrl &SetText(const char *text)		{drop.SetLabel(text);	return *this;}
+	DropCtrl &SetAutoOpen(bool set = true)	{drop.autoOpen = set;	return *this;}
+	DropCtrl &Tip(String txt)				{drop.Tip(txt);			return *this;}
+	
 private:
-	Button drop;
+	class DropButton : public Button {
+	public:
+		virtual void MouseEnter(Point, dword) {
+			if (autoOpen && !isMouseEnter) {
+				WhenAction();
+				isMouseEnter = true;
+			}
+		}
+		bool isMouseEnter = false;
+		bool autoOpen = false;
+	};
+	DropButton drop;
 	DropCtrlDialog *cc = 0;
 	
-	void OnClose() {
-		this->SetFocus();
-	}
+	virtual Size GetMinSize() const { return drop.GetMinSize(); }
+
+	void Reactivate()	{drop.isMouseEnter = false;}
+	
+	void OnClose() 		{this->SetFocus();}
 
 	void OnDrop() {
 		if(!this->IsEditable())

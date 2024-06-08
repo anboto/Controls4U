@@ -1363,7 +1363,9 @@ ctrl DropCtrl {
 	GetMinSize() { sz = XMinSize(); sz.cy += 2; return sz; }
 	GetStdSize() { sz = GetMinSize(); sz.cx *= 7; return sz; }
 
+	Doc   SetText;
 	Text   Tip @1;
+	
 
 	Paint(w) {
 		r = GetRect();
@@ -1374,6 +1376,12 @@ ctrl DropCtrl {
 		w.DrawRect(r.left, r.top, sz.cx, sz.cy, :SWhiteGray);
 		img = "CtrlImg::SortDown";
 		imgsize = GetImageSize(img);
-		w.DrawImage(r.left + (sz.cx - imgsize.cx)/2, r.top + (sz.cy - imgsize.cy)/2, img);
+		if (.SetText == "")
+			w.DrawImage(r.left + (sz.cx - imgsize.cx)/2, r.top + (sz.cy - imgsize.cy)/2, img);
+		else {
+			w.DrawImage(r.left + 0.5*imgsize.cx, r.top + (sz.cy - imgsize.cy)/2, img);
+			textsize = GetTextSize(.SetText, .SetFont);
+			w.DrawText(r.left + 2*imgsize.cx + (sz.cx - textsize.cx - 2*imgsize.cx)/2, r.top + (sz.cy - textsize.cy)/2, .SetText, .SetFont, :SBlack);
+		}
 	}
 }
