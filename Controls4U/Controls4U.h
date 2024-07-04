@@ -884,6 +884,8 @@ public:
 
 	Event<> WhenClose, ReactivateParent;
 	
+	void SetDeactivate(bool d = true) {deactivate = d;}
+	
 	const Size &ComputeSize() {
 		if (IsNull(size))
 			size = GetSize();
@@ -895,20 +897,21 @@ public:
 		SetRect(rt);
 		Ctrl::PopUp(owner, true, true, GUI_DropShadows());
 	}
-	
+
 	virtual void Close() {
 		ReactivateParent();
 		StaticRect::Close();
 	}
-	
+			
 private:
 	bool popup;
 	Size size = Null;
+	bool deactivate = true;
 	
 	bool IsPopUp() const {return popup || Ctrl::IsPopUp();}
 	
 	virtual void Deactivate() {
-		if(IsOpen() && IsPopUp()) {
+		if(IsOpen() && IsPopUp() && deactivate) {
 			WhenClose();
 			IgnoreMouseClick();
 			Close();
