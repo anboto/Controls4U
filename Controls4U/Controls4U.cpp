@@ -2061,7 +2061,7 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 	fileData.SortByName();
 	
 	thereIsAFolder = false;
-	for(int i = 0; i < fileData.GetCount(); i++) {
+	for(int i = 0; i < (int)fileData.GetCount(); i++) {
 		String fullFilename = fileData.FullFileName(i);
 		String fileName 	= fileData[i].fileName;
 		bool isFolder 		= fileData[i].isFolder;
@@ -2124,7 +2124,7 @@ void FileBrowser::FolderWhenChange() {
 			fileData.SortByName();
 			int newid = -1;
 			folders.RemoveChildren(id);  
-			for (int i = 0; i < fileData.GetCount(); ++i) {
+			for (int i = 0; i < (int)fileData.GetCount(); ++i) {
 				String fullName = fileData.FullFileName(i);
 				int auxid = folders.Add(id, NativePathIconX(fullName, true, flags), 
 									fullName, fileData[i].fileName, HasSubfolders(fullName, flags));
@@ -2142,7 +2142,7 @@ void FileBrowser::FolderWhenChange() {
 		fileData.Search(folderName, "*.*", false);
 		fileData.SortByName();
 		folders.RemoveChildren(id);  
-		for (int i = 0; i < fileData.GetCount(); ++i) {
+		for (int i = 0; i < (int)fileData.GetCount(); ++i) {
 			String fullName = fileData.FullFileName(i);
 			if (DirectoryExistsX(fullName, flags)) 
 				folders.Add(id, NativePathIconX(fullName, true, flags), fullName, 
