@@ -2052,7 +2052,7 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 	files.Clear(); 
 	FileDataArray fileData(false, flags);
 	fileData.Search(folderName, "*.*", false);
-	if (fileData.GetCount() == 0) {
+	if (fileData.size() == 0) {
 		int cy = files.GetLineCy();
 		Image img = Rescale(CtrlImg::information(), cy, cy);
 		files.Add(t_("No files or access not permitted"), -1, "", img, false, 0);		
@@ -2061,7 +2061,7 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 	fileData.SortByName();
 	
 	thereIsAFolder = false;
-	for(int i = 0; i < (int)fileData.GetCount(); i++) {
+	for(int i = 0; i < fileData.size(); i++) {
 		String fullFilename = fileData.FullFileName(i);
 		String fileName 	= fileData[i].fileName;
 		bool isFolder 		= fileData[i].isFolder;
@@ -2124,7 +2124,7 @@ void FileBrowser::FolderWhenChange() {
 			fileData.SortByName();
 			int newid = -1;
 			folders.RemoveChildren(id);  
-			for (int i = 0; i < (int)fileData.GetCount(); ++i) {
+			for (int i = 0; i < fileData.size(); ++i) {
 				String fullName = fileData.FullFileName(i);
 				int auxid = folders.Add(id, NativePathIconX(fullName, true, flags), 
 									fullName, fileData[i].fileName, HasSubfolders(fullName, flags));
@@ -2142,7 +2142,7 @@ void FileBrowser::FolderWhenChange() {
 		fileData.Search(folderName, "*.*", false);
 		fileData.SortByName();
 		folders.RemoveChildren(id);  
-		for (int i = 0; i < (int)fileData.GetCount(); ++i) {
+		for (int i = 0; i < fileData.size(); ++i) {
 			String fullName = fileData.FullFileName(i);
 			if (DirectoryExistsX(fullName, flags)) 
 				folders.Add(id, NativePathIconX(fullName, true, flags), fullName, 
