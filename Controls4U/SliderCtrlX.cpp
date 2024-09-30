@@ -566,7 +566,7 @@ int SliderCtrlX::SliderToClient(int v) const
 	if( v < 0 )
 		v = iscalefloor(v - m_nMin, HoVe(GetSize().cx - border2 - m_ThumbSize.cx,
 		                         GetSize().cy - border2 - m_ThumbSize.cy), m_nMax - m_nMin);
-	else
+	else if ( v > 0 )
 		v = iscaleceil(v - m_nMin, HoVe(GetSize().cx - border2 - m_ThumbSize.cx,
 		                         GetSize().cy - border2 - m_ThumbSize.cy), m_nMax - m_nMin);
 
