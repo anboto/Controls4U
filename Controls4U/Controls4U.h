@@ -57,9 +57,9 @@ public:
 	void MkDirOption(bool b)						{/*InitFs();	*/mkDirOption = b;}
 	String baseDir;
 	void BaseDir(const char *dir)					{/*InitFs();	*/baseDir = dir;}
-	String Get() const                           	{return GetData();}
-	operator const char *() const					{return Get();}
-	const String operator~() const   				{return Get();}
+	String ToString() const                         {return GetData();}
+	operator const char *() const					{return ToString();}
+	const String operator~() const   				{return ToString();}
 	void Set(const String& s) {
 		//InitFs();	
 		//fs.Set(s); 
