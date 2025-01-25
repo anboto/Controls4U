@@ -26,16 +26,12 @@ protected:
 	FrameLeft<Button> butBrowseLeft, butLeft, butRight, butUp;
 	FrameRight<Button> butBrowseRight, butFolder;
 	FrameRight<Button> butGo;
-	
-	//FileSel_ *pfs;
-	//FileSel_ fs;
+
 	bool isFile, isLoad;
 	String title;
 	
 	Vector <String> history;
 	int histInd;
-	
-	//void InitFs();
 	
 	void DoLeft(), DoRight(), DoUp();
 		
@@ -61,8 +57,6 @@ public:
 	operator const char *() const					{return ToString();}
 	const String operator~() const   				{return ToString();}
 	void Set(const String& s) {
-		//InitFs();	
-		//fs.Set(s); 
 		EditString::SetData(s); 
 		AddHistory();
 	}
@@ -716,8 +710,6 @@ private:
 	
 	void FolderWhenChange();
 	
-	void FileNameWhenChanged();
-	
 	void AddFolder(String folder, String &myFolders, int id);
 	
 public: 
@@ -731,11 +723,9 @@ public:
 	FileBrowser &SetUseTrashBin(bool set = true) {flags = (set ? EXT_FILE_FLAGS(flags | USE_TRASH_BIN) : EXT_FILE_FLAGS(flags & ~USE_TRASH_BIN)); return *this;};
 	FileBrowser &SetBrowseLinks(bool set = true) {flags = (set ? EXT_FILE_FLAGS(flags | BROWSE_LINKS) : EXT_FILE_FLAGS(flags & ~BROWSE_LINKS)); return *this;};
 	FileBrowser &SetDeleteReadOnly(bool set = true) {flags = (set ? EXT_FILE_FLAGS(flags | DELETE_READ_ONLY) : EXT_FILE_FLAGS(flags & ~DELETE_READ_ONLY)); return *this;};
-//	FileBrowser &SetAskBeforeDelete(bool set = true) {set ? flags |= ASK_BEFORE_DELETE : flags &= ~ASK_BEFORE_DELETE; return *this;};
 	FileBrowser &SetDragAndDrop(bool set = true) {acceptDragAndDrop = set; return *this;};
 	FileBrowser &SetBrowseFiles(bool set = true) {browseFiles = set; return *this;};
 	
-	//Callback WhenOpened;	
 	Callback WhenTreeSelected;
 	Callback WhenTreeDblClick;
 	Callback WhenSelected;

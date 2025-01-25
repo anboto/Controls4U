@@ -67,21 +67,21 @@ void EditFileFolder::Init() {
 	InsertFrame(1, butFolder);
 	isLoad = true;
 	histInd = -1;
-//	pfs = 0;
+
 	Dropping(false);
+	
+	select.WhenDrop = [&]() {
+		int maxLen = 0;
+		for (int i = 0; i < select.GetCount(); ++i) {
+			String str = select.Get(i);
+			maxLen = max(maxLen, GetEditWidth(str, Draw::GetStdFont()));
+		}
+		select.DropWidth(maxLen + Draw::GetStdFont().GetWidth('X'));
+	};
 }
-/*
-void EditFileFolder::InitFs() {
-	if (pfs)
-		return;
-	pfs = new FileSel_();
-	pfs->NoExeIcons();
-	pfs->Asking(!isLoad);
-}*/
 
 EditFileFolder::~EditFileFolder() {
-//	if (pfs)
-//		delete pfs;
+
 }
 
 EditFileFolder &EditFileFolder::UseOpenFolder(bool use) {
@@ -149,7 +149,6 @@ EditFileFolder &EditFileFolder::UseGo(bool use) {
 }
 
 void EditFileFolder::DoBrowse() {
-//	InitFs();
 	FileSel_ fs;
 	
 	String s = GetData();
@@ -187,13 +186,8 @@ void EditFileFolder::SetData(const Value& data) {
 }
 
 void EditFileFolder::DoGo(bool add) {
-//	InitFs();
-//	FileSel_ fs;
-
 	String path = GetData(); 
-/*	fs.Set(path);			
-	SetFileSel(fs);*/
-	
+
 	if (!IsRootFolder(path))
 		butUp.Enable(true);
 	else
@@ -222,11 +216,11 @@ void EditFileFolder::DoGo(bool add) {
 		WhenAction();
 }
 
-void EditFileFolder::AddHistory(String path, int max) {
+void EditFileFolder::AddHistory(String path, int mx) {
 	if (path.IsEmpty())
-		WithDropChoice::AddHistory(max);
+		WithDropChoice::AddHistory(mx);
 	else
-		select.AddHistory(path, max); 
+		select.AddHistory(path, mx); 
 }
 
 void EditFileFolder::ClearHistory() {
@@ -1983,7 +1977,6 @@ FileBrowser::FileBrowser() {
 	files.WhenEnterKey   = THISBACK(FilesWhenLeftDouble);
 	
 	textFileName.SetConvert(Single<FileNameConvert>());
-	textFileName.WhenChange = THISBACK(FileNameWhenChanged);
 }
 
 void FileBrowser::FilesWhenSel() {
@@ -1996,11 +1989,6 @@ void FileBrowser::FilesWhenSel() {
 		fileNameSelected = va[0];
 	if (WhenSelected)
 		WhenSelected();
-}
-
-void FileBrowser::FileNameWhenChanged() { 
-//	fileNameSelected;		// Old name full path
-//	textFileName;			// New name just name
 }
 
 void FileBrowser::FoldersWhenOpen(int id) {
