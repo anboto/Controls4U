@@ -180,3 +180,8 @@ esES("fichero")
 euES("")
 frFR("")
 
+T_("New log begins at %")
+caES("")
+esES("")
+euES("")
+frFR("")
