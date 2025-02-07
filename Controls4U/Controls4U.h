@@ -1145,7 +1145,7 @@ public:
 			}
 			if (pos >= wtext.GetCount())
 				pos = Null;
-			//String line = Tokenize2(text, "\n", pos);
+			
 			Insert(GetLength(), line);	
 			if (!logFile.IsVoid())
 				FileStrAppend(logFile, line);
