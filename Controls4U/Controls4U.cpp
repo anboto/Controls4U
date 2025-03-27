@@ -2169,7 +2169,7 @@ String FileBrowser::GetFile() {
 }
 
 String FileBrowser::GetFolder() {
-	return ~folders;
+	return ~folder;
 }
 
 

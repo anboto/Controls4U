@@ -32,8 +32,6 @@ protected:
 	
 	Vector <String> history;
 	int histInd;
-	
-	void DoLeft(), DoRight(), DoUp();
 		
 public:
 	EditFileFolder() 								{};
@@ -81,6 +79,7 @@ public:
 	
 	void DoGo(bool add = true);
 	void DoBrowse();
+	void DoLeft(), DoRight(), DoUp();
 	
 	void AddHistory(String path = "", int max = 12);
 	void ClearHistory();
@@ -717,8 +716,9 @@ public:
 	virtual ~FileBrowser() {};
 	
  	String GetFile();
- 	String operator~()    {return GetFile();}	
+ 	String operator~()    	{return GetFile();}	
  	String GetFolder();
+ 	void UpFolder()			{folder.DoUp();}
 	FileBrowser &SetReadOnly(bool set = true) {readOnly = set; return *this;};
 	FileBrowser &SetUseTrashBin(bool set = true) {flags = (set ? EXT_FILE_FLAGS(flags | USE_TRASH_BIN) : EXT_FILE_FLAGS(flags & ~USE_TRASH_BIN)); return *this;};
 	FileBrowser &SetBrowseLinks(bool set = true) {flags = (set ? EXT_FILE_FLAGS(flags | BROWSE_LINKS) : EXT_FILE_FLAGS(flags & ~BROWSE_LINKS)); return *this;};
