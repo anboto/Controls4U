@@ -27,6 +27,7 @@
 #define IMAGEFILE <Controls4U/StarIndicator.iml>
 #include <Draw/iml.h>
 
+#include <Functions4U/EnableWarnings.h>
 
 namespace Upp {
 	

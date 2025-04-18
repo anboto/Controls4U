@@ -23,6 +23,8 @@
 #define IMAGEFILE <Controls4U/SliderCtrlX.iml>
 #include <Draw/iml.h>
 
+#include <Functions4U/EnableWarnings.h>
+
 namespace Upp {
 	
 SliderCtrlX::SliderCtrlX()
@@ -293,7 +295,7 @@ bool SliderCtrlX::Key(dword key, int repcnt)
 	return Ctrl::Key(key, repcnt);
 }
 
-void SliderCtrlX::LeftDown(Point pos, dword keyflags)
+void SliderCtrlX::LeftDown(Point pos, dword /*keyflags*/)
 /***********************************************************************************************
  * handles the left mouse button if the slider is s CONTROL
  * virtual - public
@@ -384,7 +386,7 @@ SliderCtrlX& SliderCtrlX::MinMax(int _min, int _max)
 	return *this;
 }
 
-void SliderCtrlX::MouseMove(Point pos, dword keyflags)
+void SliderCtrlX::MouseMove(Point pos, dword /*keyflags*/)
 /***********************************************************************************************
  * virtual - public
  **********************************************************************************************/

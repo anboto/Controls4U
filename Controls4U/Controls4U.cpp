@@ -13,6 +13,7 @@
 #define TOPICFILE <Controls4U/src.tpp/all.i>
 #include <Core/topic_group.h>
 
+#include <Functions4U/EnableWarnings.h>
 
 namespace Upp {
 	
@@ -1897,7 +1898,7 @@ struct FileLenConvert : public Convert {
 		if (v == -1)
 			return "";
 		else
-			return BytesToString(int64(v));
+			return BytesToString((uint64)int64(v));
 	}
 };
 
@@ -2057,7 +2058,7 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 		if (isFolder)
 			thereIsAFolder = true; 
 		files.Add(fullFilename, 
-				  isFolder ? -1 : fileData[i].length, 
+				  isFolder ? -1 : (int64)fileData[i].length, 
 				  fileData[i].t, 
 				  NativePathIconX(fullFilename, DirectoryExistsX(fullFilename, flags), flags), 
 				  isFolder ? fileName : "ZZZZZZZ" + fileName);

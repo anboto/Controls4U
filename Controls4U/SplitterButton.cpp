@@ -4,6 +4,7 @@
 
 #include "SplitterButton.h"
 
+#include <Functions4U/EnableWarnings.h>
 
 namespace Upp {
 
