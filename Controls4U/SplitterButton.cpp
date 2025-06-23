@@ -133,13 +133,12 @@ void SplitterButton::SetButton(int id) {
 	
 	int closerPositionId = Null;
 	int closerPosition = 10000;
-	for (int i = 0; i < positions.GetCount(); ++i)
+	for (int i = 0; i < positions.GetCount(); ++i) {
 		if (abs(positions[i] - ps) < closerPosition) {
 			closerPosition = abs(positions[i] - ps);
 			closerPositionId = i;
 		}
-	
-	//bool arrowRight;
+	}
 	if (buttonNumber == 1) {
 		if (movingRight) {
 			if (closerPositionId == (positions.GetCount() - 1)) {

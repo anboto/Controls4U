@@ -29,6 +29,7 @@ public:
 		}
 	}
 	int GetPos()							{return splitter.GetPos();}
+	int GetPositionId()						{return positionId;}
 	
 	SplitterButton &SetInitialPositionId(int id);
 	
