@@ -1101,9 +1101,9 @@ void StaticClock::SetTime(const Time& tm) {
 }
 
 void StaticClock::SetTime(int h, int n, int s) {
-	t.hour = h;
-	t.minute = n;
-	t.second = s;
+	t.hour   = (byte)h;
+	t.minute = (byte)n;
+	t.second = (byte)s;
 	Refresh();
 }
 

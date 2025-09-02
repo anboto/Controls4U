@@ -751,7 +751,7 @@ public:
 	}
 	virtual ~HyperlinkLabel() {};
 	
-	HyperlinkLabel& SetHyperlink(const char* str) 		{hyperlink = str; return *this;}
+	HyperlinkLabel& SetHyperlink(const char* str) 		{hyperlink = str; Tip(str);	return *this;}
 
 private:
 	String hyperlink;
