@@ -37,7 +37,6 @@ Controls4U_Demo::Controls4U_Demo() {
 	};
 
 	selector.SetCursor(1);
-	//OnGridSel();
 	
 	timerOn = false;
 	timeCallback.Set(-100, THISBACK(Timer));
@@ -264,7 +263,6 @@ Functions4U_Demo::Functions4U_Demo() {
 	myqtf << "[R3 This are some formulas in QTF:&" << a << "&" << b << "&" << c << "&" << d << "&" << e << "&" << f;
 
 	equation.SetData(myqtf);
-	//int ss = equation.GetCy();
 
 	butDiff.WhenAction = THISBACK(OnDiff);	
 	butPatch.WhenAction = THISBACK(OnPatch);
