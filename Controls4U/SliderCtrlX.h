@@ -105,7 +105,7 @@ public:
 	SliderCtrlX&	SetMajorTicksSize(int n)			{m_nMajorTickSize = n; return *this;}
 	SliderCtrlX&	SetMaxi(int n=100)				    {m_nMax = n; return *this;}
 	SliderCtrlX&	SetMini(int n=0)					{m_nMin = n; return *this;}
-	SliderCtrlX&	SetMinorTicks(int n)				{m_nMinorTicks = n; return *this;}
+	SliderCtrlX&	SetMinorTicks(int n)				{ASSERT(n > 0); m_nMinorTicks = n; return *this;}
 	SliderCtrlX&	SetMinorTicksSize(int n)			{m_nMinorTickSize = n; return *this;}
 	SliderCtrlX&	SetSliderType(int n=0)				{m_nSliderType = n; return *this;}
 	SliderCtrlX&	SetThickness(int n = 2)			{m_nThickness = n; border2 = m_nThickness * BORDER_SIZE; return *this;}

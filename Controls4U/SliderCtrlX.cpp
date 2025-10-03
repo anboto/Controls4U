@@ -424,12 +424,12 @@ void SliderCtrlX::Paint(Draw& w)
 	}
 
 	// draw gradations	
-	for (int i = Min(); (m_nMajorTicks > 0) && (i <= Max()); i += (m_nMinorTicks == 0 ? m_nMajorTicks : m_nMinorTicks)) {
+	for (int i = Min(); i <= Max(); i++) {
 		int nPos = SliderToClient(i);
 		
-		if ((m_nMajorTicks != 0) && (i % m_nMajorTicks) == 0)
+		if (i % m_nMajorTicks == 0)
 			DrawTick(w, MAJOR, (HOVE)HoVe(HORZ, VERT), nPos, i);
-		else if ((m_nMinorTicks != 0) && (i % m_nMinorTicks) == 0)
+		else if (i % m_nMinorTicks == 0)
 			DrawTick(w, MINOR, (HOVE)HoVe(HORZ, VERT), nPos, i);
 	}
 
@@ -551,6 +551,7 @@ int SliderCtrlX::SliderToClient(int v) const
 }
 
 SliderCtrlX& SliderCtrlX::SetMajorTicks(int n) { 
+	ASSERT(IsNull(n) || n > 0);
 	if (IsNull(n))
 		m_nMajorTicks = (int)GetRangeMajorUnits(m_nMin, m_nMax);
 	else
