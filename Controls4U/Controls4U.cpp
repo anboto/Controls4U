@@ -72,12 +72,7 @@ void EditFileFolder::Init() {
 	Dropping(false);
 	
 	select.WhenDrop = [&]() {
-		int maxLen = 0;
-		for (int i = 0; i < select.GetCount(); ++i) {
-			String str = select.Get(i);
-			maxLen = max(maxLen, GetEditWidth(str, Draw::GetStdFont()));
-		}
-		select.DropWidth(maxLen + Draw::GetStdFont().GetWidth('X'));
+		select.DropWidth(GetDropWidth(select));
 	};
 }
 
