@@ -13,7 +13,6 @@
 #define TOPICFILE <Controls4U/src.tpp/all.i>
 #include <Core/topic_group.h>
 
-#include <Functions4U/EnableWarnings.h>
 
 namespace Upp {
 	
