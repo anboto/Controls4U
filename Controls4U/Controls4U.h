@@ -1178,7 +1178,7 @@ private:
 	Vector<Color> textColorLine, paperColorLine; 
 	Color textColor, paperColor;
 	String logFile;
-    virtual void  HighlightLine(int line, Vector<Highlight>& h, int pos) {
+    void HighlightLine(int line, Vector<Highlight>& h, int64 /*pos*/) override {
         for (int i = 0; i < h.GetCount(); i++) {
             if (line > textColorLine.GetCount() - 1) {
             	h[i].ink = SColorText;
