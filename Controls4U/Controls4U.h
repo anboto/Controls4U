@@ -626,7 +626,7 @@ private:
 		virtual bool Key(dword key, int count) {
 			if (key == K_DELETE) {
 				if (GetSelectCount() > 1) {
-					if(PromptYesNo(Format(t_("Do you want to send the %d files to the trash bin?"), 
+					if(PromptYesNo(F(t_("Do you want to send the %d files to the trash bin?"), 
 								GetSelectCount()))) {
 						for (int i = 0; i < GetCount(); ++i) {			
 							if (IsSelected(i)) {
@@ -634,7 +634,7 @@ private:
 								String fileName = va[0];
 								bool isFolder = DirectoryExists(fileName);
 							    if (!FileToTrashBin(fileName))
-									Exclamation(Format(t_("%s \"%s\" cannot be sent to the trash bin"), 
+									Exclamation(F(t_("%s \"%s\" cannot be sent to the trash bin"), 
 										isFolder ? t_("Folder") : t_("File"), DeQtf(fileName)));
 							}
 						}
@@ -643,10 +643,10 @@ private:
 					ValueArray va = GetColumn(GetCursor(), 0);
 					String fileName = va[0];
 					bool isFolder = DirectoryExists(fileName);
-					if(PromptYesNo(Format(t_("Do you want to send %s \"%s\" to the trash bin?"), 
+					if(PromptYesNo(F(t_("Do you want to send %s \"%s\" to the trash bin?"), 
 								isFolder ? t_("folder") : t_("file"), DeQtf(fileName))))
 						if (!FileToTrashBin(fileName))
-							Exclamation(Format(t_("%s \"%s\" cannot be sent to the trash bin"), 
+							Exclamation(F(t_("%s \"%s\" cannot be sent to the trash bin"), 
 								isFolder ? t_("Folder") : t_("File"), DeQtf(fileName)));
 				}
 				Ctrl *q = GetParent()->GetParent();
@@ -1108,7 +1108,7 @@ public:
 		if (deleteOld)
 			FileDelete(logFile);
 		else
-			FileStrAppend(logFile, "\n===== " + Format(t_("New log begins at %"), GetSysTime()) + " =====\n");
+			FileStrAppend(logFile, "\n===== " + F(t_("New log begins at %"), GetSysTime()) + " =====\n");
 	}
 	void Print(String stext, Color tc = Null, Color pc = Null) {
 		if (stext.IsEmpty())

@@ -260,7 +260,7 @@ EditFile::EditFile() {
 		if (Trim(fileName).IsEmpty())
 			Exclamation(t_("No file set"));
 		else if (!DirectoryExists(folder))
-			Exclamation(Upp::Format(t_("Folder '%s' does not exist"), DeQtf(folder)));
+			Exclamation(Upp::F(t_("Folder '%s' does not exist"), DeQtf(folder)));
 		else {
 			if (folder.StartsWith("\\")) {
 				if (0 == system("explorer " + folder))
@@ -281,7 +281,7 @@ EditFolder::EditFolder() {
 		if (Trim(folder).IsEmpty())
 			Exclamation(t_("No folder set"));
 		else if (!DirectoryExists(folder))
-			Exclamation(Upp::Format(t_("Folder '%s' does not exist"), DeQtf(folder)));
+			Exclamation(Upp::F(t_("Folder '%s' does not exist"), DeQtf(folder)));
 		else
 			LaunchWebBrowser(folder);};
 }
@@ -1872,7 +1872,7 @@ struct DisplayNameIcon : public Display {
 
 struct FileNameConvert : public Convert {
 	static ValueArray values;
-	Value Format(const Value& v) const {
+	Value F(const Value& v) const {
 		values = v;
 		ValueArray va = v;		
 		return GetFileName(String(va[0]));
@@ -1888,7 +1888,7 @@ struct FileNameConvert : public Convert {
 ValueArray FileNameConvert::values;
 
 struct FileLenConvert : public Convert {
-	Value Format(const Value& v) const {
+	Value F(const Value& v) const {
 		if (v == -1)
 			return "";
 		else
@@ -2079,7 +2079,7 @@ void FileBrowser::FolderWhenChange() {
 	String folderName = FileRealName(~folder);
 	fileNameSelected = folderName;
 	if (folderName.IsEmpty()) {
-		Exclamation(Format(t_("Folder %s does not exist or is not available"), ~folder));
+		Exclamation(F(t_("Folder %s does not exist or is not available"), ~folder));
 		return;
 	}
 	if (folderName != ~folder)
@@ -2115,7 +2115,7 @@ void FileBrowser::FolderWhenChange() {
 					newid = auxid;
 			}
 			if (newid == -1) {
-				Exclamation(Format(t_("Folder %s not found"), DeQtf(folderNameAux)));
+				Exclamation(F(t_("Folder %s not found"), DeQtf(folderNameAux)));
 				return;
 			}
 			id = newid;

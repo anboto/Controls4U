@@ -242,7 +242,7 @@ void FileBrowser_Demo::FileSelected() {
 
 void FileBrowser_Demo::FileOpened() {
 	if (!LaunchFile(~browser))
-		Exclamation(Format(t_("Sorry. It is not possible to open %s"), DeQtf(~browser)));
+		Exclamation(F(t_("Sorry. It is not possible to open %s"), DeQtf(~browser)));
 }
 
 void FileBrowser_Demo::ChangeProperties() {
@@ -307,7 +307,7 @@ SplitterButton_Demo::SplitterButton_Demo() {
 	bottom.AddColumn("Column");
 	left.AddColumn("Column");
 	for (int i = 0; i < 200; ++i) {
-		String str = Format("Data %d", i);
+		String str = F("Data %d", i);
 		top.Add(str);
 		bottom.Add(str);
 		left.Add(str);
