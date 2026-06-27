@@ -552,7 +552,7 @@ int SliderCtrlX::SliderToClient(int v) const
 SliderCtrlX& SliderCtrlX::SetMajorTicks(int n) { 
 	ASSERT(IsNull(n) || n > 0);
 	if (IsNull(n))
-		m_nMajorTicks = (int)GetRangeMajorUnits(m_nMin, m_nMax);
+		m_nMajorTicks = max(1, (int)GetRangeMajorUnits(m_nMin, m_nMax));
 	else
 		m_nMajorTicks = n; 
 	return *this;
