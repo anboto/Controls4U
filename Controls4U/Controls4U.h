@@ -1032,29 +1032,6 @@ public:
 		grid.SetCursor(size()-1);
 		return *this;
 	}
-	/*
-	VerticalSelector &Set(int id, Ctrl &r, String name) {
-		if (controls[id])
-			rect.RemoveChild(controls[id]);
-		controls[id] = &r;
-		rect.Add(r.SizePos());
-		grid.Set(id, 0, name);
-		return *this;
-	}*/
-	/*
-	VerticalSelector &SetCount(int num) {
-		int id = GetCursor();
-		if (size() != num) {
-			if (size() > num) {
-				for (int i = size()-1; i >= num; --i)
-					rect.RemoveChild(controls[i]);
-			}
-			controls.SetCount(num, nullptr);
-			grid.SetCount(num);
-		} 
-		SetCursor(min(id, size()-1));
-		return *this;
-	}*/
 	
 	VerticalSelector &Clear() {
 		controls.Clear();
@@ -1087,10 +1064,10 @@ public:
 private:
 	Vector<Ctrl *> controls;
 };
-
+/*
 class ConsoleText : public LineEdit {
 public:
-	ConsoleText() : textColor(SColorText), paperColor(SColorPaper) {/*SetReadOnly();*/}
+	ConsoleText() : textColor(SColorText), paperColor(SColorPaper) {SetReadOnly();}
 	void SetTextColor(Color c)  {textColor = c;}
 	void SetPaperColor(Color c) {paperColor = c;}
 	void MessageLine(String text, Color tc = Null, Color pc = Null) {
@@ -1174,11 +1151,20 @@ public:
 		}
 	}
 	
+	Event<dword, int> OnKey;
+	
+	virtual bool Key(dword key, int count) override {
+		bool ret = LineEdit::Key(key, count);
+		if (OnKey)
+			OnKey(key, count);
+		return ret;
+	}
+	
 private:
 	Vector<Color> textColorLine, paperColorLine; 
 	Color textColor, paperColor;
 	String logFile;
-    void HighlightLine(int line, Vector<Highlight>& h, int64 /*pos*/) override {
+    void HighlightLine(int line, Vector<Highlight>& h, int64 pos) override {
         for (int i = 0; i < h.GetCount(); i++) {
             if (line > textColorLine.GetCount() - 1) {
             	h[i].ink = SColorText;
@@ -1188,6 +1174,212 @@ private:
                 h[i].paper = paperColorLine[line];
             }
         }
+    }
+};*/
+
+class ConsoleText : public LineEdit {
+public:
+    ConsoleText() {
+        UndoSteps(0);
+        lineStyles.Add();
+    }
+
+    void Print(const char *str, Color ink, Color paper = Null) {
+        bool wasAtEnd = (GetCursor64() == GetLength64());
+
+        const char *runStart = str;
+        int runLen = 0;
+
+        auto Flush = [&] {
+            if (runLen > 0) {
+                WriteRun(runStart, runLen, ink, paper);
+                runLen = 0;
+            }
+        };
+        for (const char *p = str; *p; p++) {
+            if (*p == '\r') { 
+            	Flush(); 
+            	curCol = 0; 
+            	runStart = p + 1; 
+            } else if (*p == '\n') { 
+            	Flush(); 
+            	NewLine(); 
+            	runStart = p + 1; 
+            } else { 
+            	if (runLen == 0) 
+            		runStart = p; 
+            	runLen++; 
+            }
+        }
+        Flush();
+
+        Trim();
+        if (wasAtEnd)
+            SetCursor(GetLength64());
+        Refresh();
+    }
+	void Jsonize(JsonIO& json) override {
+	    WString text;
+	    if (json.IsStoring())
+	    	text = GetW(0, (int)GetLength64());
+	    json
+	    	("text", text)
+	    	("lineStyles", lineStyles)
+	    ;
+	    if (json.IsLoading()) {
+	        Clear();
+	        Insert(0, text);
+	    }
+	}
+    
+    Event<dword, int> OnKey;
+
+private:
+    struct CharStyle {
+    	Color ink, paper;
+
+    	void Jsonize(JsonIO& json) {
+		    int inkval = ink;
+		    int paperval = IsNull(paper) ? -1 : (int)paper;
+		    json
+		    	("ink", inkval)
+		    	("paper", paperval)
+		    ;
+		    if(json.IsLoading()) {
+		        ink = Color::FromRaw(inkval);
+		        paper = paperval == -1 ? Color(Null) : Color::FromRaw(paperval);
+		    }
+		}
+    };
+    Vector<Vector<CharStyle>> lineStyles;
+    int  curCol = 0;
+    int  maxLines = 10000;
+    
+	virtual bool Key(dword key, int count) override {
+	    int64 beforeLen = GetLength64();
+	    int64 beforePos = GetCursor64();
+		int   line = LineAt(beforePos);
+        int   col  = int(beforePos - GetPos64(line, 0));
+            
+	    bool handled = LineEdit::Key(key, count);
+	    if (!handled)
+	        return false;
+	
+		if (OnKey)
+			OnKey(key, count);
+		
+		if (key == K_ENTER) {
+            Vector<CharStyle>& row = lineStyles[line];
+            Vector<CharStyle> tail;
+            for (int i = col; i < row.GetCount(); i++)
+                tail.Add(row[i]);
+            row.SetCount(col);
+            lineStyles.Insert(line + 1, tail);
+            return true;
+		}
+		
+	    int64 afterLen = GetLength64();
+	    int64 afterPos = GetCursor64();
+	
+	    if (afterLen > beforeLen) {
+	        int n = int(afterLen - beforeLen);
+	        int64 insPos = afterPos - n;      // assumes the edit ends where the cursor now sits
+	        InsertStyles(insPos, n);
+	    } else if (afterLen < beforeLen) {
+	        int n = int(beforeLen - afterLen);
+	        int64 delPos = min(beforePos, afterPos);
+	        RemoveStyles(delPos, n);
+	    }
+	    return true;
+	}
+    int LineAt(int64 pos) {
+        for (int i = GetLineCount() - 1; i >= 0; i--)
+            if (GetPos64(i, 0) <= pos)
+                return i;
+        return 0;
+    }
+    virtual void HighlightLine(int line, Vector<LineEdit::Highlight>& h, int64 pos) override {
+        if (line < 0 || line >= lineStyles.GetCount())
+            return;
+        const Vector<CharStyle>& c = lineStyles[line];
+        for (int i = 0; i < c.GetCount() && i < h.GetCount(); i++) {
+            h[i].ink = c[i].ink;
+            if (!IsNull(c[i].paper))
+                h[i].paper = c[i].paper;
+        }
+    }
+
+    void WriteRun(const char *s, int len, Color ink, Color paper) {
+        int last = GetLineCount() - 1;
+        int64 lineStart = GetPos64(last, 0);
+        int   oldLen = GetLineLength(last);
+
+        int overlap = min(len, max(0, oldLen - curCol));
+        int extra   = len - overlap;
+
+        if (overlap > 0) {
+            int64 pos = lineStart + curCol;
+            Remove(pos, overlap);
+            Insert(pos, WString(s, overlap));
+            for (int i = 0; i < overlap; i++)
+                lineStyles[last][curCol + i] = {ink, paper};
+        }
+        if (extra > 0) {
+            Insert(lineStart + curCol + overlap, WString(s + overlap, extra));
+            for (int i = 0; i < extra; i++)
+                lineStyles[last].Add({ink, paper});
+        }
+        curCol += len;
+    }
+
+    void NewLine() {
+        Insert(GetLength64(), WString('\n', 1));
+        lineStyles.Add();
+        curCol = 0;
+    }
+
+    void Trim() {
+        int over = GetLineCount() - maxLines;
+        if (over <= 0)
+            return;
+        int64 cut = GetPos64(over, 0);
+        Remove(0, cut);
+        lineStyles.Remove(0, over);
+    }
+    void InsertStyles(int64 pos, int n) {
+        for (int i = 0; i < n; i++) {
+            WString ch = GetW(pos + i, 1);           // character just inserted, to check for '\n'
+            int line, col;
+            PosToLineCol(pos + i, line, col);
+            if (ch[0] == '\n') {
+                Vector<CharStyle>& row = lineStyles[line];
+                Vector<CharStyle> tail;
+                for (int k = col; k < row.GetCount(); k++)
+                    tail.Add(row[k]);
+                row.SetCount(col);
+                lineStyles.Insert(line + 1, tail);
+            } else
+                lineStyles[line].Insert(col, {SBlack(), Null}); // default style for typed text
+        }
+    }
+
+    void RemoveStyles(int64 pos, int n) {
+        for (int i = 0; i < n; i++) {
+            int line, col;
+            PosToLineCol(pos, line, col);
+            if (col < lineStyles[line].GetCount())
+                lineStyles[line].Remove(col);
+            else if (line + 1 < lineStyles.GetCount()) {
+                // removed a newline: merge next row into this one
+                lineStyles[line].Append(lineStyles[line + 1]);
+                lineStyles.Remove(line + 1);
+            }
+        }
+    }
+
+    void PosToLineCol(int64 pos, int& line, int& col) {
+        line = LineAt(pos);
+        col  = int(pos - GetPos64(line, 0));
     }
 };
 
