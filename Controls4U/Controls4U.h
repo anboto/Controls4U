@@ -1229,6 +1229,7 @@ public:
 	    if (json.IsLoading()) {
 	        Clear();
 	        Insert(0, text);
+	        SetCursor(GetLength64());
 	    }
 	}
     
@@ -1299,10 +1300,10 @@ private:
         return 0;
     }
     virtual void HighlightLine(int line, Vector<LineEdit::Highlight>& h, int64 pos) override {
-        if (line < 0 || line >= lineStyles.GetCount())
+        if (line < 0 || line >= lineStyles.size())
             return;
         const Vector<CharStyle>& c = lineStyles[line];
-        for (int i = 0; i < c.GetCount() && i < h.GetCount(); i++) {
+        for (int i = 0; i < c.size() && i < h.size(); i++) {
             h[i].ink = c[i].ink;
             if (!IsNull(c[i].paper))
                 h[i].paper = c[i].paper;
@@ -1354,7 +1355,7 @@ private:
             if (ch[0] == '\n') {
                 Vector<CharStyle>& row = lineStyles[line];
                 Vector<CharStyle> tail;
-                for (int k = col; k < row.GetCount(); k++)
+                for (int k = col; k < row.size(); k++)
                     tail.Add(row[k]);
                 row.SetCount(col);
                 lineStyles.Insert(line + 1, tail);
@@ -1367,9 +1368,9 @@ private:
         for (int i = 0; i < n; i++) {
             int line, col;
             PosToLineCol(pos, line, col);
-            if (col < lineStyles[line].GetCount())
+            if (col < lineStyles[line].size())
                 lineStyles[line].Remove(col);
-            else if (line + 1 < lineStyles.GetCount()) {
+            else if (line + 1 < lineStyles.size()) {
                 // removed a newline: merge next row into this one
                 lineStyles[line].Append(lineStyles[line + 1]);
                 lineStyles.Remove(line + 1);
