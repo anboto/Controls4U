@@ -1240,15 +1240,15 @@ private:
     	Color ink, paper;
 
     	void Jsonize(JsonIO& json) {
-		    int inkval = ink;
+		    int inkval = (int)ink;
 		    int paperval = IsNull(paper) ? -1 : (int)paper;
 		    json
 		    	("ink", inkval)
 		    	("paper", paperval)
 		    ;
 		    if(json.IsLoading()) {
-		        ink = Color::FromRaw(inkval);
-		        paper = paperval == -1 ? Color(Null) : Color::FromRaw(paperval);
+		        ink = Color::FromRaw((dword)inkval);
+		        paper = paperval == -1 ? Color(Null) : Color::FromRaw((dword)paperval);
 		    }
 		}
     };
@@ -1262,9 +1262,9 @@ private:
 		int   line = LineAt(beforePos);
         int   col  = int(beforePos - GetPos64(line, 0));
             
-	    bool handled = LineEdit::Key(key, count);
-	    if (!handled)
-	        return false;
+		bool handled = LineEdit::Key(key, count);
+		if (!handled)
+			return false;
 	
 		if (OnKey)
 			OnKey(key, count);
@@ -1299,7 +1299,7 @@ private:
                 return i;
         return 0;
     }
-    virtual void HighlightLine(int line, Vector<LineEdit::Highlight>& h, int64 pos) override {
+    virtual void HighlightLine(int line, Vector<LineEdit::Highlight>& h, int64 /*pos*/) override {
         if (line < 0 || line >= lineStyles.size())
             return;
         const Vector<CharStyle>& c = lineStyles[line];
