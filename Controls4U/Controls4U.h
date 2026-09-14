@@ -1320,13 +1320,13 @@ private:
 
         if (overlap > 0) {
             int64 pos = lineStart + curCol;
-            Remove(pos, overlap);
-            Insert(pos, WString(s, overlap));
+            Remove((int)pos, overlap);
+            Insert((int)pos, WString(s, overlap));
             for (int i = 0; i < overlap; i++)
                 lineStyles[last][curCol + i] = {ink, paper};
         }
         if (extra > 0) {
-            Insert(lineStart + curCol + overlap, WString(s + overlap, extra));
+            Insert((int)(lineStart + curCol + overlap), WString(s + overlap, extra));
             for (int i = 0; i < extra; i++)
                 lineStyles[last].Add({ink, paper});
         }
@@ -1334,7 +1334,7 @@ private:
     }
 
     void NewLine() {
-        Insert(GetLength64(), WString('\n', 1));
+        Insert((int)GetLength64(), WString('\n', 1));
         lineStyles.Add();
         curCol = 0;
     }
@@ -1344,7 +1344,7 @@ private:
         if (over <= 0)
             return;
         int64 cut = GetPos64(over, 0);
-        Remove(0, cut);
+        Remove(0, (int)cut);
         lineStyles.Remove(0, over);
     }
     void InsertStyles(int64 pos, int n) {
