@@ -28,8 +28,8 @@ Controls4U_Demo::Controls4U_Demo() {
 	selector.Add(staticImageSet_Demo, "StaticImageSet");
 	selector.Add(staticCtrls_Demo, "Static Controls");
 	selector.Add(staticCtrlsTest_Demo, "Static Controls Test");
-	selector.Add(functions4U_Demo, "Functions4U samples");
 	selector.Add(splitterButton_Demo, "SplitterButton");
+	selector.Add(langDropList_Demo, "LangDropList");
 	selector.Add(aboutDlg, "About U++");
 
 	selector.WhenSel = [&](int row) {
@@ -246,47 +246,6 @@ void FileBrowser_Demo::FileOpened() {
 }
 
 void FileBrowser_Demo::ChangeProperties() {
-}
-
-Functions4U_Demo::Functions4U_Demo() {
-	CtrlLayout(*this);
-	
-	String myqtf;
-
-	QtfRichObject a = QtfEquation("-sqrt(2/3)");
-	QtfRichObject b = QtfEquation("integral(-sqrt(cos(phi_ini^2)) + i^2 + 6, i = 1, 10)*dx = cos((27+x^2)^3.25)/(PI*R_0^2)");
-	QtfRichObject c = QtfEquation("delta_i = a+b*x+c*x^2+d*x^3");
-	QtfRichObject d = QtfEquation("sqrt(cos(p^2))");
-	QtfRichObject e = QtfEquation("summation(a+b*x+c*x^2+d*x^3, x = h, h+1)*dx = SI_h");
-	QtfRichObject f = QtfEquation("exp(-1/2*(b-r)/a*t)*r*a*(d*b*w^2*a+d*r*w^2*a-d*r*c+d*b*c+2*f1*w*a*c)/((2*w^2*a)^2+b^2-2*c*a-b*r)");
-	
-	myqtf << "[R3 This are some formulas in QTF:&" << a << "&" << b << "&" << c << "&" << d << "&" << e << "&" << f;
-
-	equation.SetData(myqtf);
-
-	butDiff.WhenAction = THISBACK(OnDiff);	
-	butPatch.WhenAction = THISBACK(OnPatch);
-	butShowEquation.WhenAction = THISBACK(OnSet);
-}
-
-void Functions4U_Demo::OnDiff() {
-	if (!BSDiff(~editOriginal, ~editNew, ~editPatch)) 
-		Exclamation(DeQtf(BsGetLastError()));
-}
-
-void Functions4U_Demo::OnPatch() {
-	if (!BSPatch(~editOriginal, ~editNew, ~editPatch)) 
-		Exclamation(DeQtf(BsGetLastError()));
-}
-
-void Functions4U_Demo::OnSet() {
-	String myqtf;
-
-	QtfRichObject a = QtfEquation(~strEquation);
-	
-	myqtf << a;
-
-	userEquation.SetData(myqtf);	
 }
 
 StaticImageSet_Demo::StaticImageSet_Demo() {

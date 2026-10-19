@@ -2177,5 +2177,78 @@ AboutUpp::AboutUpp() {
 	about.NoLazy();
 	Add(about.SizePos());
 }
+
+struct LangItem : Moveable<LangItem> {
+	int    lng;
+	String name;
+};
+
+LangDropList& LangDropList::Languages(const Vector<int>& langs) {
+	Fill(langs);
+	return *this;
+}
+
+LangDropList& LangDropList::Languages(const Vector<const char *> &codes) {
+	Vector<int> v;
+	for (const char *c : codes) {
+		int l = LNGFromText(c);
+		if (l)
+			v.Add(l);
+	}
+	Fill(v);
+	return *this;
+}
+
+void LangDropList::Fill(const Vector<int>& langs) {
+	Clear();
+
+	Vector<LangItem> items;
+	for (int l : langs) {
+		l = NoCharset(l);
+		bool dup = false;
+		for (const LangItem& it : items)
+			if(it.lng == l) { 
+				dup = true; 
+				break; 
+			}
+		if(dup) 
+			continue;
+
+		const LanguageInfo& li = GetLanguageInfo(l);
+		String name;
+		
+		if (!li.native_name.IsEmpty())
+			name = F("%s: %s (%s)", LNGAsText(l), InitCaps(li.native_name), InitCaps(li.english_name));
+		else
+			name = F("%s: English", LNGAsText(l));
+		
+		LangItem& it = items.Add();
+		it.lng = l;
+		it.name = name;
+	}
+
+	Sort(items, [](const LangItem& a, const LangItem& b) { return CompareNoCase(a.name, b.name) < 0; });
+	for (const LangItem& it : items)
+		Add(it.lng, it.name);
+
+	if (!GetCount())
+		return;
+
+	int sel = FindKey(NoCharset(LNG_ENGLISH));
+	SetIndex(max(sel, 0));
+}
+
+int LangDropList::GetLanguage() const {
+	int i = GetIndex();
+	return i >= 0 ? (int)GetKey(i) : LNG_ENGLISH;
+}
+
+LangDropList& LangDropList::SetLanguage(int lng) {
+	int i = FindKey(NoCharset(lng));
+	if (i >= 0)
+		SetIndex(i);
+	ASSERT(i >= 0);
+	return *this;
+}
 	
 }

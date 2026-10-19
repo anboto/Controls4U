@@ -53,15 +53,6 @@ public:
 	void ChangeProperties();
 };
 
-class Functions4U_Demo : public WithFunctions4U<StaticRect> {
-public:
-	typedef Functions4U_Demo CLASSNAME;
-	Functions4U_Demo();
-	void OnDiff();
-	void OnPatch();
-	void OnSet();
-};
-
 class StaticImageSet_Demo : public WithStaticImageSet<StaticRect> {
 public:
 	typedef StaticImageSet_Demo CLASSNAME;
@@ -103,6 +94,15 @@ public:
 	DemoDrop demo;
 };
 
+class LangDropList_Demo : public StaticRect {
+public:
+	LangDropList lang;
+	LangDropList_Demo() {
+		Add(lang.HSizePos(10, 10).TopPos(10, 24));
+		lang.Languages({"en-EN", "es-ES", "fr-FR", "de-DE", "zh-CN"});
+	}	
+};
+
 class Controls4U_Demo : public TopWindow {
 public:
 	typedef Controls4U_Demo CLASSNAME;
@@ -116,11 +116,11 @@ public:
 	Meter_Demo meter_Demo;
 	JBControlsDemo jbcontrols_Demo;
 	FileBrowser_Demo fileBrowser_Demo;
-	Functions4U_Demo functions4U_Demo;
 	StaticImageSet_Demo staticImageSet_Demo;
 	Box_Demo box_Demo;
 	Drop_Demo drop_Demo;
 	SplitterButton_Demo splitterButton_Demo;
+	LangDropList_Demo langDropList_Demo;
 	AboutUpp aboutDlg;
 
 	int timerOn;

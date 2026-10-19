@@ -1384,6 +1384,27 @@ private:
     }
 };
 
+
+class LangDropList : public DropList {
+public:
+	typedef LangDropList CLASSNAME;
+
+	LangDropList() {}
+
+	LangDropList& Languages(const Vector<int>& langs);                       // LNG_ values
+	LangDropList& Languages(const Vector<const char *> &codes);      // e.g. {"en-US", "es-ES"}
+
+	// Selected language with UTF-8 charset, ready for SetLanguage()
+	int           GetLanguage() const;
+	LangDropList& SetLanguage(int lng);          // select by language (charset ignored); no-op if not in list
+
+private:
+	void Fill(const Vector<int>& langs);
+	static int NoCharset(int lng)           { return lng & 0xfffff; }
+};
+
+
+
 }
 	
 #endif
