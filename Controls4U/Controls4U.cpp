@@ -152,13 +152,13 @@ void EditFileFolder::DoBrowse() {
 	SetFileSel(fs);
 		
 	if (!s.IsEmpty()) {
-		if (DirectoryExists(AppendFileNameX(fs.GetBaseDir(), s))) 
+		if (DirectoryExists(fs.GetBaseDir() / s)) 
 			fs.PreSelect(s);
 		else {
 			String folder = GetFileFolder(s);
 			if (folder.IsEmpty() || folder.Find("..") >= 0 || 
-				!DirectoryExists(AppendFileNameX(fs.GetBaseDir(), folder))) 
-				s = AppendFileNameX(NormalizePath(folder, fs.GetActiveDir()), GetFileName(s));
+				!DirectoryExists(fs.GetBaseDir() / folder))
+				s = NormalizePath(folder, fs.GetActiveDir()) / GetFileName(s);
 			fs.PreSelect(s);
 		}
 	}
@@ -1880,7 +1880,7 @@ struct FileNameConvert : public Convert {
 	Value Scan(const Value& text) const {
 		if (values.IsEmpty())
 			values.SetCount(1, String(""));
-		values.Set(0, AppendFileNameX(GetFileDirectory(String(values[0])), String(text)));
+		values.Set(0, GetFileDirectory(String(values[0])) / text);
 		return values;
 	}
 };
@@ -2060,8 +2060,8 @@ void FileBrowser::FilesList(String folderName, bool &thereIsAFolder) {
 }
 
 bool HasSubfolders(String folder, int ) {
-	for (FindFile ff(AppendFileNameX(folder, "*.*")); ff; ff++) {
-		if (DirectoryExistsX(AppendFileNameX(folder, ff.GetName())))
+	for (FindFile ff(folder / "*.*"); ff; ff++) {
+		if (DirectoryExistsX(folder / ff.GetName()))
 			return true;
 	}
 	return false;
